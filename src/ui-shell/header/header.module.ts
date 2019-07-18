@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
-import { Close20Module } from "@carbon/icons-angular/lib/close/20";
+import { Close20Module } from "@rocketsoftware/icons-angular/lib/close/20";
 
 import { I18nModule } from "./../../i18n/i18n.module";
 

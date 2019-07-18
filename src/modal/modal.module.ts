@@ -1,7 +1,7 @@
 // modules
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { Close16Module } from "@carbon/icons-angular/lib/close/16";
+import { Close16Module } from "@rocketsoftware/icons-angular/lib/close/16";
 
 // imports
 import { ModalPlaceholder } from "./modal-placeholder.component";

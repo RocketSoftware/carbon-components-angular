@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { Checkmark16Module } from "@carbon/icons-angular/lib/checkmark/16";
+import { Checkmark16Module } from "@rocketsoftware/icons-angular/lib/checkmark/16";
 
 import { InlineLoading } from "./inline-loading.component";
 

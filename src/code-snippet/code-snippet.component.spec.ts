@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { I18nModule } from "../i18n/i18n.module";
 
 import { CodeSnippet } from "./code-snippet.component";
-import { Copy16Module } from "@carbon/icons-angular/lib/copy/16";
-import { ChevronDown16Module } from "@carbon/icons-angular/lib/chevron--down/16";
+import { Copy16Module } from "@rocketsoftware/icons-angular/lib/copy/16";
+import { ChevronDown16Module } from "@rocketsoftware/icons-angular/lib/chevron--down/16";
 
 describe("CodeSnippet", () => {
 	let component: CodeSnippet;

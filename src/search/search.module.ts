@@ -2,8 +2,8 @@
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { Search16Module } from "@carbon/icons-angular/lib/search/16";
-import { Close16Module } from "@carbon/icons-angular/lib/close/16";
+import { Search16Module } from "@rocketsoftware/icons-angular/lib/search/16";
+import { Close16Module } from "@rocketsoftware/icons-angular/lib/close/16";
 
 // imports
 import { I18nModule } from "../i18n/i18n.module";

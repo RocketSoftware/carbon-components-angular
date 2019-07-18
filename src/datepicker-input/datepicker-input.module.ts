@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { DatePickerInput } from "./datepicker-input.component";
-import { Calendar16Module } from "@carbon/icons-angular/lib/calendar/16";
+import { Calendar16Module } from "@rocketsoftware/icons-angular/lib/calendar/16";
 
 @NgModule({
 	declarations: [

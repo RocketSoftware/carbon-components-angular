@@ -2,8 +2,8 @@
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { Copy16Module } from "@carbon/icons-angular/lib/copy/16";
-import { ChevronDown16Module } from "@carbon/icons-angular/lib/chevron--down/16";
+import { Copy16Module } from "@rocketsoftware/icons-angular/lib/copy/16";
+import { ChevronDown16Module } from "@rocketsoftware/icons-angular/lib/chevron--down/16";
 
 import { I18nModule } from "../i18n/i18n.module";
 

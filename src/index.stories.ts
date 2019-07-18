@@ -2,8 +2,8 @@ import { storiesOf, moduleMetadata } from "@storybook/angular";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 
 import { ButtonModule } from "./";
-import { Bee20Module } from "@carbon/icons-angular/lib/bee/20";
-import { Document20Module } from "@carbon/icons-angular/lib/document/20";
+import { Bee20Module } from "@rocketsoftware/icons-angular/lib/bee/20";
+import { Document20Module } from "@rocketsoftware/icons-angular/lib/document/20";
 
 @Component({
 	selector: "app-welcome",

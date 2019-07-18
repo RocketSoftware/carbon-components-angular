@@ -2,8 +2,8 @@
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { ChevronDown16Module } from "@carbon/icons-angular/lib/chevron--down/16";
-import { WarningFilled16Module } from "@carbon/icons-angular/lib/warning--filled/16";
+import { ChevronDown16Module } from "@rocketsoftware/icons-angular/lib/chevron--down/16";
+import { WarningFilled16Module } from "@rocketsoftware/icons-angular/lib/warning--filled/16";
 
 // imports
 import { Select } from "./select.component";

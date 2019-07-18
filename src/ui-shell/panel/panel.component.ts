@@ -10,7 +10,7 @@ import { Component, Input } from "@angular/core";
  * $feature-flags: (
  * 	ui-shell: true
  * );
- * @import 'carbon-components/src/globals/scss/styles';
+ * @import '@rocketsoftware/carbon-components/src/globals/scss/styles';
  * ```
  *
  */

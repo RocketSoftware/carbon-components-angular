@@ -1,9 +1,9 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { ChevronRight16Module } from "@carbon/icons-angular/lib/chevron--right/16";
-import { Search16Module } from "@carbon/icons-angular/lib/search/16";
-import { Close16Module } from "@carbon/icons-angular/lib/close/16";
+import { ChevronRight16Module } from "@rocketsoftware/icons-angular/lib/chevron--right/16";
+import { Search16Module } from "@rocketsoftware/icons-angular/lib/search/16";
+import { Close16Module } from "@rocketsoftware/icons-angular/lib/close/16";
 
 import { DialogModule } from "./../dialog/dialog.module";
 import { NFormsModule } from "./../forms/forms.module";

@@ -7,7 +7,7 @@ import { CommonModule } from "@angular/common";
 import { Label } from "./label.component";
 import { TextInput } from "./input.directive";
 import { TextArea } from "./text-area.directive";
-import { WarningFilled16Module } from "@carbon/icons-angular/lib/warning--filled/16";
+import { WarningFilled16Module } from "@rocketsoftware/icons-angular/lib/warning--filled/16";
 
 @NgModule({
 	declarations: [

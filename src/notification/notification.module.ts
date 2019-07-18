@@ -1,9 +1,9 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { Close16Module } from "@carbon/icons-angular/lib/close/16";
-import { ErrorFilled16Module } from "@carbon/icons-angular/lib/error--filled/16";
-import { CheckmarkFilled16Module } from "@carbon/icons-angular/lib/checkmark--filled/16";
-import { WarningFilled16Module } from "@carbon/icons-angular/lib/warning--filled/16";
+import { Close16Module } from "@rocketsoftware/icons-angular/lib/close/16";
+import { ErrorFilled16Module } from "@rocketsoftware/icons-angular/lib/error--filled/16";
+import { CheckmarkFilled16Module } from "@rocketsoftware/icons-angular/lib/checkmark--filled/16";
+import { WarningFilled16Module } from "@rocketsoftware/icons-angular/lib/warning--filled/16";
 
 import { Toast } from "./toast.component";
 import { Notification } from "./notification.component";

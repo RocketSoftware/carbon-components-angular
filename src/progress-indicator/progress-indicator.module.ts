@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { CheckmarkOutline16Module } from "@carbon/icons-angular/lib/checkmark--outline/16";
-import { Warning16Module } from "@carbon/icons-angular/lib/warning/16";
+import { CheckmarkOutline16Module } from "@rocketsoftware/icons-angular/lib/checkmark--outline/16";
+import { Warning16Module } from "@rocketsoftware/icons-angular/lib/warning/16";
 
 import { ProgressIndicator } from "./progress-indicator.component";
 import { DialogModule } from "./../dialog/dialog.module";

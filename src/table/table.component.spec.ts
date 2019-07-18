@@ -15,7 +15,7 @@ import { By } from "@angular/platform-browser";
 
 import { NFormsModule } from "./../forms/forms.module";
 import { I18nModule } from "../i18n/i18n.module";
-import { ChevronRight16Module } from "@carbon/icons-angular/lib/chevron--right/16";
+import { ChevronRight16Module } from "@rocketsoftware/icons-angular/lib/chevron--right/16";
 
 @Component({
 	template: `<ibm-table [model]="tableModel"></ibm-table>`

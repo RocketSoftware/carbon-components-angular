@@ -2,7 +2,7 @@ import { storiesOf, moduleMetadata } from "@storybook/angular";
 import { action } from "@storybook/addon-actions";
 import { withKnobs, text, select } from "@storybook/addon-knobs/angular";
 
-import { InformationFilled16Module } from "@carbon/icons-angular/lib/information--filled/16";
+import { InformationFilled16Module } from "@rocketsoftware/icons-angular/lib/information--filled/16";
 import { DialogModule, PlaceholderModule, DocumentationModule } from "../../";
 
 storiesOf("Tooltip", module)

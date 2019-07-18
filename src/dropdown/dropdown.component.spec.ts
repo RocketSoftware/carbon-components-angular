@@ -9,7 +9,7 @@ import { ScrollableList } from "./scrollable-list.directive";
 import { I18nModule } from "../i18n/i18n.module";
 import { DropdownService } from "./dropdown.service";
 import { PlaceholderModule } from "./../placeholder/placeholder.module";
-import { ChevronDown16Module } from "@carbon/icons-angular/lib/chevron--down/16";
+import { ChevronDown16Module } from "@rocketsoftware/icons-angular/lib/chevron--down/16";
 
 @Component({
 	template: `
