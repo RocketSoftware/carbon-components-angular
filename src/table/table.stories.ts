@@ -30,11 +30,11 @@ import {
 	DocumentationModule
 } from "../";
 
-import { Settings16Module } from "@carbon/icons-angular/lib/settings/16";
-import { Delete16Module } from "@carbon/icons-angular/lib/delete/16";
-import { Save16Module } from "@carbon/icons-angular/lib/save/16";
-import { Download16Module } from "@carbon/icons-angular/lib/download/16";
-import { Add20Module } from "@carbon/icons-angular/lib/add/20";
+import { Settings16Module } from "@rocketsoftware/icons-angular/lib/settings/16";
+import { Delete16Module } from "@rocketsoftware/icons-angular/lib/delete/16";
+import { Save16Module } from "@rocketsoftware/icons-angular/lib/save/16";
+import { Download16Module } from "@rocketsoftware/icons-angular/lib/download/16";
+import { Add20Module } from "@rocketsoftware/icons-angular/lib/add/20";
 
 import { clone } from "../utils/utils";
 

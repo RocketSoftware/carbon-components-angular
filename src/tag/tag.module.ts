@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { Close16Module } from "@carbon/icons-angular/lib/close/16";
+import { Close16Module } from "@rocketsoftware/icons-angular/lib/close/16";
 
 import { Tag } from "./tag.component";
 import { TagFilter } from "./tag-filter.component";
