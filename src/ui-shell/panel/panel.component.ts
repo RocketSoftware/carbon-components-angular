@@ -8,7 +8,7 @@ import { Component, Input } from "@angular/core";
 	selector: "ibm-panel",
 	template: `
 		<aside
-			class="bx--panel--overlay"
+			class="bx--header-panel"
 			[ngClass]="{
 				'bx--panel--expanded': expanded
 			}">
