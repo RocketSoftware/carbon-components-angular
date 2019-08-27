@@ -10,7 +10,7 @@ import { Component, Input } from "@angular/core";
 		<aside
 			class="bx--header-panel"
 			[ngClass]="{
-				'bx--panel--expanded': expanded
+				'bx--header-panel--expanded': expanded
 			}">
 			<ng-content></ng-content>
 		</aside>
