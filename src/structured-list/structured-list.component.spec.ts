@@ -6,7 +6,7 @@ import { StructuredList } from "./structured-list.component";
 import { ListRow } from "./list-row.component";
 import { ListHeader } from "./list-header.component";
 import { ListColumn } from "./list-column.component";
-import { CheckmarkFilled16Module } from "@carbon/icons-angular/lib/checkmark--filled/16";
+import { CheckmarkFilled16Module } from "@rocketsoftware/icons-angular/lib/checkmark--filled/16";
 import { wrappedError } from "@angular/core/src/error_handler";
 
 @Component({
