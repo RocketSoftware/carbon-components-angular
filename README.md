@@ -3,13 +3,12 @@
 	<p align="center">
 	An Angular implementation of the Carbon Design System
 		<br /><br />
-		<a href="https://travis-ci.com/IBM/carbon-components-angular">
-			<img src="https://travis-ci.com/IBM/carbon-components-angular.svg?branch=master" />
-		</a>
+		<a href="https://circleci.com/gh/RocketSoftware/carbon-components-angular">
+    <img src="https://circleci.com/gh/RocketSoftware/carbon-components-angular.svg?style=shield" alt="Build Status" />
+  </a>
 		<a href="https://www.npmjs.com/package/@rocketsoftware/carbon-components-angular">
 			<img src="https://img.shields.io/npm/v/@rocketsoftware/carbon-components-angular.svg" />
 		</a>
-		<img alt="semantic-release" src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg">
 	</p>
 </p>
 
@@ -26,7 +25,7 @@ $ npm i --save @rocketsoftware/carbon-components-angular @rocketsoftware/carbon-
 Then we need to include carbon-components in `src/styles.scss`:
 
 ```scss
-@import "~carbon-components/scss/globals/scss/styles.scss";
+@import "~@rocketsoftware/carbon-components/scss/globals/scss/styles.scss";
 ```
 
 > *Note:* For offline usage we'll need to set `$font-path: '~@rocketsoftware/carbon-components/src/globals/fonts';` at the very top of our `src/styles.scss`. This will copy the fonts to our `dist` folder upon successful build. If you like the fonts to be a part of your `assets` folder and not pollute the `dist` folder then copy the fonts from `node_modules/@rocketsoftware/carbon-components/src/globals/fonts` into our app's `src/assets/fonts` folder and add `$font-path: '/assets/fonts/';` at the very top of our `src/styles.scss`.
