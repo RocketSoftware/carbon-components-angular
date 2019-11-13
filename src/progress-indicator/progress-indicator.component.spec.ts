@@ -5,8 +5,8 @@ import { By } from "@angular/platform-browser";
 import { ProgressIndicator } from "./progress-indicator.component";
 import { CommonModule } from "@angular/common";
 import { DialogModule, ExperimentalModule } from "..";
-import { CheckmarkOutline16Module } from "@carbon/icons-angular/lib/checkmark--outline/16";
-import { Warning16Module } from "@carbon/icons-angular/lib/warning/16";
+import { CheckmarkOutline16Module } from "@rocketsoftware/icons-angular/lib/checkmark--outline/16";
+import { Warning16Module } from "@rocketsoftware/icons-angular/lib/warning/16";
 
 @Component({
 	template: `<ibm-progress-indicator [steps]="steps" [current]="current"></ibm-progress-indicator>`

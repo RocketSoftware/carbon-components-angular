@@ -2,8 +2,8 @@ import { TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { Component } from "@angular/core";
-import { ChevronDown16Module } from "@carbon/icons-angular/lib/chevron--down/16";
-import { WarningFilled16Module } from "@carbon/icons-angular/lib/warning--filled/16";
+import { ChevronDown16Module } from "@rocketsoftware/icons-angular/lib/chevron--down/16";
+import { WarningFilled16Module } from "@rocketsoftware/icons-angular/lib/warning--filled/16";
 import { Select } from "./select.component";
 
 @Component({

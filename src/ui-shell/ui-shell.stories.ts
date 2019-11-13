@@ -8,7 +8,7 @@ import { DialogModule } from "./../dialog/dialog.module";
 import { DocumentationModule } from "./../documentation-component/documentation.module";
 import { Component } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { Carbon32Module } from "@carbon/icons-angular/lib/carbon/32";
+import { Carbon32Module } from "@rocketsoftware/icons-angular/lib/carbon/32";
 
 @Component({
 	selector: "app-bar",

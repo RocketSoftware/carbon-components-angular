@@ -3,7 +3,7 @@ import { By } from "@angular/platform-browser";
 import { Component } from "@angular/core";
 import { DatePicker } from "./datepicker.component";
 import { DatePickerInput } from "../datepicker-input/datepicker-input.component";
-import { Calendar16Module } from "@carbon/icons-angular/lib/calendar/16";
+import { Calendar16Module } from "@rocketsoftware/icons-angular/lib/calendar/16";
 import { FormsModule, Validators } from "@angular/forms";
 import { tick } from "@angular/core/src/render3";
 

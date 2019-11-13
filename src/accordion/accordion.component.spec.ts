@@ -2,7 +2,7 @@ import { TestBed } from "@angular/core/testing";
 import { FormsModule } from "@angular/forms";
 import { By } from "@angular/platform-browser";
 import { Component } from "@angular/core";
-import { ChevronRight16Module } from "@carbon/icons-angular/lib/chevron--right/16";
+import { ChevronRight16Module } from "@rocketsoftware/icons-angular/lib/chevron--right/16";
 import { AccordionItem } from "./accordion-item.component";
 import { Accordion } from "./accordion.component";
 
