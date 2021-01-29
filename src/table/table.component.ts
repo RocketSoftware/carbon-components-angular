@@ -7,7 +7,8 @@ import {
 	ElementRef,
 	AfterViewInit,
 	TemplateRef,
-	OnDestroy
+	OnDestroy,
+	HostBinding
 } from "@angular/core";
 import { Subscription, fromEvent, Observable } from "rxjs";
 
@@ -15,19 +16,12 @@ import { TableModel } from "./table-model.class";
 import { TableHeaderItem } from "./table-header-item.class";
 import { TableItem } from "./table-item.class";
 
-import { getFocusElementList, tabbableSelectorIgnoreTabIndex } from "../common/tab.service";
-import { I18n, Overridable } from "./../i18n/i18n.module";
-import { merge } from "./../utils/object";
+import { getFocusElementList, tabbableSelectorIgnoreTabIndex } from "carbon-components-angular/common";
+import { I18n, Overridable } from "carbon-components-angular/i18n";
+import { merge } from "carbon-components-angular/utils";
 import { DataGridInteractionModel } from "./data-grid-interaction-model.class";
 import { TableDomAdapter } from "./table-adapter.class";
-
-export interface TableTranslations {
-	FILTER: string;
-	END_OF_DATA: string;
-	SCROLL_TOP: string;
-	CHECKBOX_HEADER: string;
-	CHECKBOX_ROW: string;
-}
+import { TableRowSize } from "./table.types";
 
 /**
  * Build your table with this component by extending things that differ from default.
@@ -119,6 +113,9 @@ export interface TableTranslations {
  * }
  * ```
  *
+ * If you want to do your sorting on the backend or query for sorted data as a result of user
+ * clicking the table header, check table [`sort`](#sort) output documentation
+ *
  * See `TableHeaderItem` class for more information.
  *
  * ## No data template
@@ -178,15 +175,18 @@ export interface TableTranslations {
 	template: `
 	<table
 		ibmTable
-		sortable="true"
+		[sortable]="sortable"
+		[noBorder]="noBorder"
+		[ngClass]="{'bx--data-table--sticky-header': stickyHeader}"
 		[size]="size"
 		[striped]="striped"
 		[skeleton]="skeleton">
 		<thead
 			ibmTableHead
+			[sortable]="sortable"
 			(deselectAll)="onDeselectAll()"
 			(selectAll)="onSelectAll()"
-			(sort)="sort.emit($event)"
+			(sort)="doSort($event)"
 			[checkboxHeaderLabel]="getCheckboxHeaderLabel()"
 			[filterTitle]="getFilterTitle()"
 			[model]="model"
@@ -207,6 +207,7 @@ export interface TableTranslations {
 			(selectRow)="onSelectRow($event)"
 			[checkboxRowLabel]="getCheckboxRowLabel()"
 			[enableSingleSelect]="enableSingleSelect"
+			(rowClick)="onRowClick($event)"
 			[expandButtonAriaLabel]="expandButtonAriaLabel"
 			[model]="model"
 			[size]="size"
@@ -284,7 +285,7 @@ export class Table implements AfterViewInit, OnDestroy {
 
 	static focus(element: HTMLElement) {
 		const focusElementList = getFocusElementList(element, tabbableSelectorIgnoreTabIndex);
-		if (element.firstElementChild && element.firstElementChild.classList.contains("bx--table-sort")) {
+		if (element.firstElementChild && element.firstElementChild.classList.contains("bx--table-sort") && focusElementList.length > 1) {
 			focusElementList[1].focus();
 		} else if (focusElementList.length > 0) {
 			focusElementList[0].focus();
@@ -300,6 +301,9 @@ export class Table implements AfterViewInit, OnDestroy {
 	set model(m: TableModel) {
 		if (this._model) {
 			this.subscriptions.unsubscribe();
+			// Need to create a new subscription instance here because unsubscribing prevents any new subscriptions
+			// from being added for some reason. When a new model is set, none of the subscriptions would exist.
+			this.subscriptions = new Subscription();
 		}
 
 		this._model = m;
@@ -338,7 +342,7 @@ export class Table implements AfterViewInit, OnDestroy {
 	/**
 	 * Size of the table rows.
 	 */
-	@Input() size: "sm" | "sh" | "md" | "lg" = "md";
+	@Input() size: TableRowSize = "md";
 	/**
 	 * Set to `true` for a loading table.
 	 */
@@ -357,24 +361,16 @@ export class Table implements AfterViewInit, OnDestroy {
 		}
 	}
 
+	/**
+	 * Setting sortable to false will disable all headers including headers which are sortable. Is is
+	 * possible to set the sortable state on the header item to disable/enable sorting for only some headers.
+	 */
+	@Input() sortable = true;
+
+	@Input() noBorder = true;
+
 	get isDataGrid(): boolean {
 		return this._isDataGrid;
-	}
-
-	/**
-	 * Controls whether to show the selection checkboxes column or not.
-	 *
-	 * @deprecated in the next major carbon-components-angular version in favor of
-	 * `showSelectionColumn` because of new attribute `enableSingleSelect`
-	 *  please use `showSelectionColumn` instead
-	 */
-	@Input()
-	set enableRowSelect(value: boolean) {
-		this.showSelectionColumn = value;
-	}
-
-	get enableRowSelect () {
-		return this.showSelectionColumn;
 	}
 
 	/**
@@ -462,7 +458,7 @@ export class Table implements AfterViewInit, OnDestroy {
 	/**
 	 * Set to `true` to stick the header to the top of the table
 	 */
-	@Input() stickyHeader = false;
+	@HostBinding("class.bx--data-table_inner-container") @Input() stickyHeader = false;
 
 	/**
 	 * Set footer template to customize what is displayed in the tfoot section of the table
@@ -484,6 +480,58 @@ export class Table implements AfterViewInit, OnDestroy {
 	/**
 	 * Emits an index of the column that wants to be sorted.
 	 *
+	 * If no observers are provided (default), table will attempt to do a simple sort of the data loaded
+	 * into the model.
+	 *
+	 * If an observer is provided, table will not attempt any sorting of its own and it is up to the observer
+	 * to sort the table. This is what you typically want if you're using a backend query to get the sorted
+	 * data or want to sort data across multiple pages.
+	 *
+	 * Usage:
+	 *
+	 * ```typescript
+	 * @Component({
+	 * 	selector: "app-table",
+	 * 	template: `
+	 * 		<ibm-table
+	 * 			[model]="model"
+	 * 			(sort)="simpleSort($event)">
+	 * 			No data.
+	 * 		</ibm-table>
+	 * 	`
+	 * })
+	 * export class TableApp implements OnInit, OnChanges {
+	 * 	@Input() model = new TableModel();
+	 *
+	 * 	ngOnInit() {
+	 * 		this.model.header = [
+	 * 			new TableHeaderItem({ data: "Name" }),
+	 * 			new TableHeaderItem({ data: "hwer" })
+	 * 		];
+	 *
+	 * 		this.model.data = [
+	 * 			[new TableItem({ data: "Name 1" }), new TableItem({ data: "qwer" })],
+	 * 			[new TableItem({ data: "Name 3" }), new TableItem({ data: "zwer" })],
+	 * 			[new TableItem({ data: "Name 2" }), new TableItem({ data: "swer" })],
+	 * 			[new TableItem({ data: "Name 4" }), new TableItem({data: "twer"})],
+	 * 			[new TableItem({ data: "Name 5" }), new TableItem({data: "twer"})],
+	 * 			[new TableItem({ data: "Name 6" }), new TableItem({data: "twer"})]
+	 * 		];
+	 * 	}
+	 *
+	 * 	simpleSort(index: number) {
+	 * 		// this function does a simple sort, which is the default for the table and if that's
+	 * 		// all you want, you don't need to do this.
+	 *
+	 * 		// here you can query your backend and update the model.data based on the result
+	 * 		if (this.model.header[index].sorted) {
+	 * 			// if already sorted flip sorting direction
+	 * 			this.model.header[index].ascending = this.model.header[index].descending;
+	 * 		}
+	 * 		this.model.sort(index);
+	 * 	}
+	 * }
+	 * ```
 	 */
 	@Output() sort = new EventEmitter<number>();
 
@@ -514,6 +562,11 @@ export class Table implements AfterViewInit, OnDestroy {
 	 * @param ({model: this.model, deselectedRowIndex: index})
 	 */
 	@Output() deselectRow = new EventEmitter<Object>();
+
+	/**
+	 * Emits if a row item excluding expandButtons, checkboxes, or radios is clicked.
+	 */
+	@Output() rowClick = new EventEmitter<number>();
 
 	/**
 	 * Emits when table requires more data to be loaded.
@@ -607,9 +660,11 @@ export class Table implements AfterViewInit, OnDestroy {
 
 			// if the model has just initialized don't focus or reset anything
 			if (previousRow === -1 || previousColumn === -1) { return; }
-
-			const previousElement = tableAdapter.getCell(previousRow, previousColumn);
-			Table.setTabIndex(previousElement, -1);
+			// Make the previous cell unfocusable (if it's not the current)
+			if (previousRow !== currentRow || previousColumn !== currentColumn) {
+				const previousElement = tableAdapter.getCell(previousRow, previousColumn);
+				Table.setTabIndex(previousElement, -1);
+			}
 			Table.focus(currentElement);
 		});
 		// call this after assigning `this.interactionModel` since it depends on it
@@ -640,18 +695,19 @@ export class Table implements AfterViewInit, OnDestroy {
 	onSelectRow(event) {
 		// check for the existence of the selectedRowIndex property
 		if (Object.keys(event).includes("selectedRowIndex")) {
+			if (this.enableSingleSelect) {
+				this.model.selectAll(false);
+			}
 			this.model.selectRow(event.selectedRowIndex, true);
 			this.selectRow.emit(event);
-
-			if (this.showSelectionColumn && this.enableSingleSelect) {
-				const index = event.selectedRowIndex;
-				this.model.selectAll(false);
-				this.model.selectRow(index);
-			}
 		} else {
 			this.model.selectRow(event.deselectedRowIndex, false);
 			this.deselectRow.emit(event);
 		}
+	}
+
+	onRowClick(index: number) {
+		this.rowClick.emit(index);
 	}
 
 	updateSelectAllCheckbox() {
@@ -763,6 +819,19 @@ export class Table implements AfterViewInit, OnDestroy {
 		);
 	}
 
+	doSort(index: number) {
+		if (this.sort.observers.length === 0) {
+			// no sort provided so do the simple sort
+			if (this.model.header[index].sorted) {
+				// if already sorted flip sorting direction
+				this.model.header[index].ascending = this.model.header[index].descending;
+			}
+			this.model.sort(index);
+		}
+
+		this.sort.emit(index);
+	}
+
 	/**
 	 * Triggered when the user scrolls on the `<tbody>` element.
 	 * Emits the `scrollLoad` event.
@@ -808,5 +877,4 @@ export class Table implements AfterViewInit, OnDestroy {
 	getFilterTitle() {
 		return this._filterTitle.subject;
 	}
-
 }

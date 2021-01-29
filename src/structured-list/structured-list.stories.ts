@@ -2,9 +2,10 @@ import { storiesOf, moduleMetadata } from "@storybook/angular";
 import { action } from "@storybook/addon-actions";
 import { withKnobs, boolean } from "@storybook/addon-knobs";
 
-import { StructuredListModule, DocumentationModule } from "../";
+import { StructuredListModule } from "../";
+import { DocumentationModule } from "../documentation-component/documentation.module";
 
-storiesOf("Structured List", module).addDecorator(
+storiesOf("Components|Structured List", module).addDecorator(
 	moduleMetadata({
 		imports: [StructuredListModule, DocumentationModule]
 	}))
@@ -178,7 +179,7 @@ storiesOf("Structured List", module).addDecorator(
 	}))
 	.add("Documentation", () => ({
 		template: `
-			<ibm-documentation src="documentation/components/StructuredList.html"></ibm-documentation>
+			<ibm-documentation src="documentation/classes/src_structured_list.structuredlist.html"></ibm-documentation>
 		`
 	}));
 

@@ -2,15 +2,16 @@ export class PaginationModel {
 	/**
 	 * Tracks the current page.
 	 */
-	currentPage: number;
+	currentPage = 1;
 
 	/**
 	 * Length of page.
 	 */
-	pageLength: number;
+	/* tslint:disable-next-line*/
+	pageLength? = 10;
 
 	/**
 	 * Absolute total number of items needed to paginate.
 	 */
-	totalDataLength: number;
+	totalDataLength = 0;
 }

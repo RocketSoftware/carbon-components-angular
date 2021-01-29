@@ -9,9 +9,9 @@ import {
 } from "@angular/core";
 
 import { NotificationContent } from "./notification-content.interface";
-import { I18n } from "./../i18n/i18n.module";
+import { I18n } from "carbon-components-angular/i18n";
 import { NotificationDisplayService } from "./notification-display.service";
-import { of } from "rxjs";
+import { of, isObservable, Subject } from "rxjs";
 
 /**
  * Notification messages are displayed toward the top of the UI and do not interrupt user’s work.
@@ -24,34 +24,63 @@ import { of } from "rxjs";
 	selector: "ibm-notification",
 	template: `
 		<div class="bx--inline-notification__details">
-			<ibm-icon-error-filled16
+			<svg
+				ibmIcon="error--filled"
+				size="16"
 				*ngIf="notificationObj.type === 'error'"
 				class="bx--inline-notification__icon">
-			</ibm-icon-error-filled16>
-			<ibm-icon-warning-filled16
+			</svg>
+			<svg
+				ibmIcon="warning--filled"
+				size="16"
 				*ngIf="notificationObj.type === 'warning'"
 				class="bx--inline-notification__icon">
-			</ibm-icon-warning-filled16>
-			<ibm-icon-checkmark-filled16
+			</svg>
+			<svg
+				ibmIcon="checkmark--filled"
+				size="16"
 				*ngIf="notificationObj.type === 'success'"
 				class="bx--inline-notification__icon">
-			</ibm-icon-checkmark-filled16>
+			</svg>
+			<svg
+				ibmIcon="information--filled"
+				size="16"
+				*ngIf="notificationObj.type === 'info'"
+				class="bx--inline-notification__icon">
+			</svg>
 			<div class="bx--inline-notification__text-wrapper">
-				<p [innerHTML]="notificationObj.title" class="bx--inline-notification__title"></p>
-				<p [innerHTML]="notificationObj.message" class="bx--inline-notification__subtitle"></p>
+				<p *ngIf="!notificationObj.template" ibmNotificationTitle [innerHTML]="notificationObj.title"></p>
+				<div *ngIf="!notificationObj.template" ibmNotificationSubtitle>
+					<span [innerHTML]="notificationObj.message"></span>
+					<ng-container *ngFor="let link of notificationObj.links">
+						<a ibmLink [href]="link.href"> {{link.text}}</a>
+					</ng-container>
+				</div>
+				<ng-container *ngTemplateOutlet="notificationObj.template; context: { $implicit: notificationObj}"></ng-container>
 			</div>
 		</div>
+		<div *ngFor="let action of notificationObj.actions">
+			<button
+				(click)="onClick(action, $event)"
+				ibmButton="ghost"
+				size="sm"
+				class="bx--inline-notification__action-button"
+				type="button">
+				{{action.text}}
+			</button>
+		</div>
 		<button
-			*ngIf="showClose"
+			*ngIf="!isCloseHidden"
 			(click)="onClose()"
 			class="bx--inline-notification__close-button"
 			[attr.aria-label]="notificationObj.closeLabel | async"
 			type="button">
-			<ibm-icon-close16 class="bx--inline-notification__close-icon"></ibm-icon-close16>
+			<svg ibmIcon="close" size="16" class="bx--inline-notification__close-icon"></svg>
 		</button>
 	`
 })
 export class Notification {
+	private static notificationCount = 0;
 	/**
 	 * Can have `type`, `title`, and `message` members.
 	 *
@@ -76,9 +105,10 @@ export class Notification {
 
 	componentRef: ComponentRef<Notification>;
 
-	@ViewChild("notification") notification;
+	// @ts-ignore
+	@ViewChild("notification", { static: false }) notification;
 
-	@HostBinding("attr.id") notificationID = "notification";
+	@HostBinding("attr.id") notificationID = `notification-${Notification.notificationCount++}`;
 	@HostBinding("class.bx--inline-notification") notificationClass = true;
 	@HostBinding("attr.role") role = "alert";
 
@@ -87,10 +117,7 @@ export class Notification {
 	@HostBinding("class.bx--inline-notification--success") get isSuccess() { return this.notificationObj.type === "success"; }
 	@HostBinding("class.bx--inline-notification--warning") get isWarning() { return this.notificationObj.type === "warning"; }
 	@HostBinding("class.bx--inline-notification--low-contrast") get isLowContrast() { return this.notificationObj.lowContrast; }
-
-	get showClose() {
-		return this._notificationObj.showClose;
-	}
+	@HostBinding("class.bx--inline-notification--hide-close-button") get isCloseHidden() { return !this._notificationObj.showClose; }
 
 	protected defaultNotificationObj = {
 		title: "",
@@ -108,6 +135,17 @@ export class Notification {
 	 */
 	onClose() {
 		this.close.emit();
+	}
+
+	onClick(action, event) {
+		if (!action.click) {
+			return;
+		}
+		if (isObservable(action.click)) {
+			(action.click as Subject<{event: Event, action: any}>).next({event, action});
+		} else {
+			action.click({event, action});
+		}
 	}
 
 	destroy() {

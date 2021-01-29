@@ -2,11 +2,37 @@ import {
 	EventEmitter
 } from "@angular/core";
 
-import { PaginationModel } from "./../pagination/pagination-model.class";
+import { PaginationModel } from "carbon-components-angular/pagination";
 import { TableHeaderItem } from "./table-header-item.class";
 import { TableItem } from "./table-item.class";
+import { TableRow } from "./table-row.class";
+import { Subject } from "rxjs";
 
+export type HeaderType = number | "select" | "expand";
+
+/**
+ * TableModel represents a data model for two-dimensional data. It's used for all things table
+ * (table component, table toolbar, pagination, etc)
+ *
+ * TableModel manages its internal data integrity very well if you use the provided helper
+ * functions for modifying rows and columns and assigning header and data in that order.
+ *
+ * It also provides direct access to the data so you can read and modify it.
+ * If you change the structure of the data (by directly pushing into the arrays or otherwise),
+ * keep in mind to keep the data structure intact.
+ *
+ * Header length and length of every line in the data should be equal.
+ *
+ * If they are not consistent, unexpected things will happen.
+ *
+ * Use the provided functions when in doubt.
+ */
 export class TableModel implements PaginationModel {
+	/**
+	 * The number of models instantiated, used for (among other things) unique id generation
+	 */
+	protected static COUNT = 0;
+
 	/**
 	 * Sets data of the table.
 	 *
@@ -44,6 +70,11 @@ export class TableModel implements PaginationModel {
 	dataChange = new EventEmitter();
 	rowsSelectedChange = new EventEmitter<number>();
 	rowsExpandedChange = new EventEmitter<number>();
+	/**
+	 * Gets emitted when `selectAll` is called. Emits false if all rows are deselected and true if
+	 * all rows are selected.
+	 */
+	selectAllChange = new Subject<boolean>();
 
 	/**
 	 * Gets the full data.
@@ -58,12 +89,12 @@ export class TableModel implements PaginationModel {
 	/**
 	 * Contains information about selection state of rows in the table.
 	 */
-	rowsSelected: Array<boolean>;
+	rowsSelected: boolean[] = [];
 
 	/**
 	 * Contains information about expanded state of rows in the table.
 	 */
-	rowsExpanded: Array<boolean>;
+	rowsExpanded: boolean[] = [];
 
 	/**
 	 * Contains information about the context of the row.
@@ -73,7 +104,7 @@ export class TableModel implements PaginationModel {
 	 * string can be one of `"success" | "warning" | "info" | "error" | ""` and it's
 	 * empty or undefined by default
 	 */
-	rowsContext: Array<string>;
+	rowsContext: string[] = [];
 
 	/**
 	 * Contains class name(s) of the row.
@@ -82,22 +113,22 @@ export class TableModel implements PaginationModel {
 	 *
 	 * It's empty or undefined by default
 	 */
-	rowsClass: Array<string>;
+	rowsClass: string[] = [];
 
 	/**
 	 * Contains information about the header cells of the table.
 	 */
-	header: TableHeaderItem[];
+	header: TableHeaderItem[] = [];
 
 	/**
-	 * Tracks the current page of the table.
+	 * Tracks the current page.
 	 */
-	currentPage: number;
+	currentPage = 1;
 
 	/**
-	 * Length of page of the table.
+	 * Length of page.
 	 */
-	pageLength: number;
+	pageLength = 10;
 
 	/**
 	 * Set to true when there is no more data to load in the table
@@ -124,7 +155,8 @@ export class TableModel implements PaginationModel {
 	 * Set to `null` to reset to default behavior.
 	 */
 	set totalDataLength(length: number) {
-		this._totalDataLength = length;
+		// if this function is called without a parameter we need to set to null to avoid having undefined != null
+		this._totalDataLength = length || null;
 	}
 
 	/**
@@ -132,7 +164,7 @@ export class TableModel implements PaginationModel {
 	 */
 	get totalDataLength() {
 		// if manually set data length
-		if (this._totalDataLength && this._totalDataLength >= 0) {
+		if (this._totalDataLength !== null && this._totalDataLength >= 0) {
 			return this._totalDataLength;
 		}
 
@@ -148,6 +180,70 @@ export class TableModel implements PaginationModel {
 	 * Used in `data`
 	 */
 	protected _data: TableItem[][] = [[]];
+
+	/**
+	 * The number of models instantiated, this is to make sure each table has a different
+	 * model count for unique id generation.
+	 */
+	protected tableModelCount = 0;
+
+	constructor() {
+		this.tableModelCount = TableModel.COUNT++;
+	}
+
+	/**
+	 * Returns an id for the given column
+	 *
+	 * @param column the column to generate an id for
+	 * @param row the row of the header to generate an id for
+	 */
+	getId(column: HeaderType, row = 0): string {
+		return `table-header-${row}-${column}-${this.tableModelCount}`;
+	}
+
+	/**
+	 * Returns the id of the header. Used to link the cells with headers (or headers with headers)
+	 *
+	 * @param column the column to start getting headers for
+	 * @param colSpan the number of columns to get headers for (defaults to 1)
+	 */
+	getHeaderId(column: HeaderType, colSpan = 1): string {
+		if (column === "select" || column === "expand") {
+			return this.getId(column);
+		}
+
+		let ids = [];
+		for (let i = column; i >= 0; i--) {
+			if (this.header[i]) {
+				for (let j = 0; j < colSpan; j++) {
+					ids.push(this.getId(i + j));
+				}
+				break;
+			}
+		}
+
+		return ids.join(" ");
+	}
+
+	/**
+	 * Finds closest header by trying the `column` and then working its way to the left
+	 *
+	 * @param column the target column
+	 */
+	getHeader(column: number): TableHeaderItem {
+		if (!this.header) {
+			return null;
+		}
+
+		for (let i = column; i >= 0; i--) {
+			const headerCell = this.header[i];
+			if (headerCell) {
+				return headerCell;
+			}
+		}
+
+		return null;
+	}
 
 	/**
 	 * Returns how many rows is currently selected
@@ -300,11 +396,11 @@ export class TableModel implements PaginationModel {
 	}
 
 	hasExpandableRows() {
-		return this.data.some(data => data.some(d => d.expandedData)); // checking for some in 2D array
+		return this.data.some(data => data.some(d => d && d.expandedData)); // checking for some in 2D array
 	}
 
 	isRowExpandable(index: number) {
-		return this.data[index].some(d => d.expandedData);
+		return this.data[index].some(d => d && d.expandedData);
 	}
 
 	isRowExpanded(index: number) {
@@ -502,7 +598,7 @@ export class TableModel implements PaginationModel {
 	 */
 	isRowFiltered(index: number): boolean {
 		const realIndex = this.realRowIndex(index);
-		return this.header.some((item, i) => item.filter(this.row(realIndex)[i]));
+		return this.header.some((item, i) => item && item.filter(this.row(realIndex)[i]));
 	}
 
 	/**
@@ -512,6 +608,9 @@ export class TableModel implements PaginationModel {
 	 * @param value state to set the row to. Defaults to `true`
 	 */
 	selectRow(index: number, value = true) {
+		if (this.isRowDisabled(index)) {
+			return;
+		}
 		this.rowsSelected[index] = value;
 		this.rowsSelectedChange.emit(index);
 	}
@@ -522,13 +621,24 @@ export class TableModel implements PaginationModel {
 	 * @param value state to set all rows to. Defaults to `true`
 	 */
 	selectAll(value = true) {
-		for (let i = 0; i < this.rowsSelected.length; i++) {
-			this.selectRow(i, value);
+		if (this.data.length >= 1) {
+			for (let i = 0; i < this.rowsSelected.length; i++) {
+				this.selectRow(i, value);
+			}
 		}
+		this.selectAllChange.next(value);
 	}
 
 	isRowSelected(index: number) {
 		return this.rowsSelected[index];
+	}
+
+	/**
+	 * Checks if row is disabled or not.
+	 */
+	isRowDisabled(index: number) {
+		const row = this.data[index] as TableRow;
+		return !!row.disabled;
 	}
 
 	/**

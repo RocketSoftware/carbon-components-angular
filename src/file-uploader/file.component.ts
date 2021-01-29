@@ -1,16 +1,13 @@
-
 import {
 	Component,
 	Input,
 	Output,
-	ViewChild,
 	EventEmitter,
-	OnInit,
-	HostBinding
+	HostBinding,
+	OnDestroy
 } from "@angular/core";
-import { NG_VALUE_ACCESSOR } from "@angular/forms";
 
-import { I18n } from "../i18n/i18n.module";
+import { I18n } from "carbon-components-angular/i18n";
 import { FileItem } from "./file-item.interface";
 
 @Component({
@@ -24,30 +21,39 @@ import { FileItem } from "./file-item.interface";
 			(keyup.enter)="remove.emit()"
 			(keyup.space)="remove.emit()"
 			tabindex="0">
-			<ibm-icon-warning-filled16
+			<svg
 				*ngIf="isInvalidText"
-				class="bx--file--invalid">
-			</ibm-icon-warning-filled16>
-			<ibm-icon-close16
+				ibmIcon="warning--filled"
+				class="bx--file--invalid"
+				size="16">
+			</svg>
+			<svg
+				ibmIcon="close"
+				size="16"
 				class="bx--file-close"
 				[ariaLabel]="translations.REMOVE_BUTTON">
-			</ibm-icon-close16>
+			</svg>
 		</span>
 		<span *ngIf="fileItem.state === 'upload'">
-			<ibm-loading size="sm"></ibm-loading>
+			<div class="bx--inline-loading__animation">
+				<ibm-loading size="sm"></ibm-loading>
+			</div>
 		</span>
 		<span
 			*ngIf="fileItem.state === 'complete'"
 			class="bx--file__state-container"
 			tabindex="0">
-			<ibm-icon-checkmark-filled16
+
+			<svg
+				ibmIcon="checkmark--filled"
+				size="16"
 				class="bx--file-complete"
 				[ariaLabel]="translations.CHECKMARK">
-			</ibm-icon-checkmark-filled16>
+			</svg>
 		</span>
 	`
 })
-export class File {
+export class FileComponent implements OnDestroy {
 	/**
 	 * Accessible translations for the close and complete icons
 	 */
@@ -66,4 +72,8 @@ export class File {
 	}
 
 	constructor(protected i18n: I18n) {}
+
+	ngOnDestroy() {
+		this.remove.emit();
+	}
 }

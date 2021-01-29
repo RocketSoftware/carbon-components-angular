@@ -33,6 +33,17 @@ export class TableHeaderItem {
 	filterCount = 0;
 
 	/**
+	 * The number of rows to span
+	 * **NOTE:** not supported by the default carbon table
+	 */
+	rowSpan = 1;
+
+	/**
+	 * The number of columns to span
+	 */
+	colSpan = 1;
+
+	/**
 	 * Attach a class to the column, both the header and column cells.
 	 *
 	 */
@@ -223,10 +234,18 @@ export class TableHeaderItem {
 	 * Override to enable different sorting.
 	 *
 	 * < 0 if `one` should go before `two`
-	 * > 0 if `one` shoulg go after `two`
+	 * > 0 if `one` should go after `two`
 	 * 0 if it doesn't matter (they are the same)
 	 */
 	compare(one: TableItem, two: TableItem): number {
+		if (!one || !two) {
+			return 0;
+		}
+
+		if (typeof one.data === "string") {
+			return one.data.localeCompare(two.data);
+		}
+
 		if (one.data < two.data) {
 			return -1;
 		} else if (one.data > two.data) {

@@ -48,11 +48,12 @@ import { RadioChange } from "./radio-change.class";
 	template: `
 		<div
 			class="bx--radio-button-group"
+			[attr.aria-label]="ariaLabel"
+			[attr.aria-labelledby]="ariaLabelledby"
 			[ngClass]="{
 				'bx--radio-button-group--vertical': orientation === 'vertical',
 				'bx--radio-button-group--label-left': orientation === 'vertical' && labelPlacement === 'left'
-			}"
-			role="radiogroup">
+			}">
 			<ng-content></ng-content>
 		</div>
 	`,
@@ -73,6 +74,17 @@ export class RadioGroup implements AfterContentInit, AfterViewInit, ControlValue
 	@Input() orientation: "horizontal" | "vertical" = "horizontal";
 
 	@Input() labelPlacement: "right" | "left" =  "right";
+
+	/**
+	 * Used to set the `aria-label` attribute on the radio group element.
+	 */
+	// tslint:disable-next-line:no-input-rename
+	@Input() ariaLabel: string;
+	/**
+	 * Used to set the `aria-labelledby` attribute on the radio group element.
+	 */
+	// tslint:disable-next-line:no-input-rename
+	@Input() ariaLabelledby: string;
 
 	/**
 	 * Emits event notifying other classes of a change using a `RadioChange` class.
@@ -202,11 +214,10 @@ export class RadioGroup implements AfterContentInit, AfterViewInit, ControlValue
 	 */
 	updateSelectedRadioFromValue() {
 		let alreadySelected = this._selected != null && this._selected.value === this._value;
-
 		if (this.radios && !alreadySelected) {
 			this._selected = null;
 			this.radios.forEach(radio => {
-				if (radio.checked) {
+				if (radio.checked || radio.value === this._value) {
 					this._selected = radio;
 				}
 			});
@@ -220,11 +231,6 @@ export class RadioGroup implements AfterContentInit, AfterViewInit, ControlValue
 		this.change.emit(event);
 		this.propagateChange(event.value);
 		this.onTouched();
-	}
-
-	updateRadioNames() {
-		console.warn("updateRadioNames had been deprecated. Use updateRadios instead");
-		this.updateRadios();
 	}
 
 	/**
@@ -246,6 +252,10 @@ export class RadioGroup implements AfterContentInit, AfterViewInit, ControlValue
 	 */
 	writeValue(value: any) {
 		this.value = value;
+		setTimeout(() => {
+			this.updateSelectedRadioFromValue();
+			this.checkSelectedRadio();
+		});
 	}
 
 	ngAfterContentInit() {

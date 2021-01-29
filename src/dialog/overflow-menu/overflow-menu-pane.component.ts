@@ -1,9 +1,18 @@
-import { Component, HostListener, ElementRef, AfterViewInit } from "@angular/core";
+import {
+	Component,
+	HostListener,
+	ElementRef,
+	AfterViewInit,
+	Optional
+} from "@angular/core";
 import { Dialog } from "../dialog.component";
 import { position } from "@carbon/utils-position";
-import { isFocusInLastItem, isFocusInFirstItem } from "./../../common/tab.service";
-import { I18n } from "./../../i18n/i18n.module";
-import { ExperimentalService } from "./../../experimental.module";
+import { isFocusInLastItem, isFocusInFirstItem } from "carbon-components-angular/common";
+import { I18n } from "carbon-components-angular/i18n";
+import { ExperimentalService } from "carbon-components-angular/experimental";
+import { AnimationFrameService, ElementService } from "carbon-components-angular/utils";
+import { CloseReasons } from "../dialog-config.interface";
+import { closestAttr } from "carbon-components-angular/utils";
 
 /**
  * Extend the `Dialog` component to create an overflow menu.
@@ -20,7 +29,7 @@ import { ExperimentalService } from "./../../experimental.module";
 			#dialog
 			class="bx--overflow-menu-options bx--overflow-menu-options--open"
 			role="menu"
-			(click)="doClose()"
+			(click)="onClose($event)"
 			[attr.aria-label]="dialogConfig.menuLabel">
 			<ng-template
 				[ngTemplateOutlet]="dialogConfig.content"
@@ -30,29 +39,38 @@ import { ExperimentalService } from "./../../experimental.module";
 	`
 })
 export class OverflowMenuPane extends Dialog implements AfterViewInit {
-	constructor(protected elementRef: ElementRef, protected i18n: I18n, protected experimental: ExperimentalService) {
-		super(elementRef);
+	constructor(
+		protected elementRef: ElementRef,
+		protected i18n: I18n,
+		protected experimental: ExperimentalService,
+		@Optional() protected animationFrameService: AnimationFrameService = null,
+		// mark `elementService` as optional since making it mandatory would be a breaking change
+		@Optional() protected elementService: ElementService = null) {
+		super(elementRef, elementService, animationFrameService);
 	}
 
 	onDialogInit() {
-		this.addGap["bottom"] = pos => {
+		const positionOverflowMenu = pos => {
 			let offset;
-			if (this.experimental.isExperimental) {
-				/*
-				* 16 is half the width of the overflow menu trigger element.
-				* we also move the element by half of it's own width, since
-				* position service will try and center everything
-				*/
-				offset = Math.round(this.dialog.nativeElement.offsetWidth / 2) - 16;
-			} else {
-				// 60 shifts the menu right to align the arrow.
-				offset = 60;
-			}
+			/*
+			* 20 is half the width of the overflow menu trigger element.
+			* we also move the element by half of it's own width, since
+			* position service will try and center everything
+			*/
+			const closestRel = closestAttr("position", ["relative", "fixed", "absolute"], this.elementRef.nativeElement);
+			const topFix = closestRel ? closestRel.getBoundingClientRect().top * -1 : 0;
+			const leftFix = closestRel ? closestRel.getBoundingClientRect().left * -1 : 0;
+
+			offset = Math.round(this.dialog.nativeElement.offsetWidth / 2) - 20;
 			if (this.dialogConfig.flip) {
-				return position.addOffset(pos, 0, -offset);
+				return position.addOffset(pos, topFix, (-offset + leftFix));
 			}
-			return position.addOffset(pos, 0, offset);
+			return position.addOffset(pos, topFix, (offset + leftFix));
 		};
+
+		this.addGap["bottom"] = positionOverflowMenu;
+
+		this.addGap["top"] = positionOverflowMenu;
 
 		if (!this.dialogConfig.menuLabel) {
 			this.dialogConfig.menuLabel = this.i18n.get().OVERFLOW_MENU.OVERFLOW;
@@ -100,10 +118,20 @@ export class OverflowMenuPane extends Dialog implements AfterViewInit {
 			case "Escape":
 			case "Tab":
 				event.stopImmediatePropagation();
-				this.doClose();
+				this.doClose({
+					reason: CloseReasons.interaction,
+					target: event.target
+				});
 				break;
 			default: break;
 		}
+	}
+
+	onClose(event) {
+		this.doClose({
+			reason: CloseReasons.interaction,
+			target: event.target
+		});
 	}
 
 	afterDialogViewInit() {
@@ -114,8 +142,10 @@ export class OverflowMenuPane extends Dialog implements AfterViewInit {
 				button.tabIndex = -1;
 			}
 		});
-		focusElementList[0].tabIndex = 0;
-		focusElementList[0].focus();
+		if (focusElementList[0]) {
+			focusElementList[0].tabIndex = 0;
+			focusElementList[0].focus();
+		}
 	}
 
 	protected listItems() {

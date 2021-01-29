@@ -2,12 +2,15 @@ import {
 	Component,
 	Input,
 	Output,
-	EventEmitter
+	EventEmitter,
+	AfterViewInit
 } from "@angular/core";
 
 import { TableModel } from "../table-model.class";
-import { I18n, Overridable } from "../../i18n/i18n.module";
+import { getScrollbarWidth } from "carbon-components-angular/utils";
+import { I18n, Overridable } from "carbon-components-angular/i18n";
 import { Observable } from "rxjs";
+import { TableRowSize } from "../table.types";
 
 /**
  * A subcomponent that creates the thead of the table
@@ -24,34 +27,54 @@ import { Observable } from "rxjs";
 	template: `
 	<ng-container *ngIf="model">
 		<tr>
-			<th ibmTableHeadExpand *ngIf="model.hasExpandableRows()"></th>
+			<th
+				ibmTableHeadExpand
+				*ngIf="model.hasExpandableRows()"
+				scope="col"
+				[ngClass]="{'bx--table-expand-v2': stickyHeader}"
+				[id]="model.getId('expand')">
+			</th>
 			<th
 				*ngIf="!skeleton && showSelectionColumn && enableSingleSelect"
-				style="width: 0;">
+				scope="col"
+				style="width: 0;"
+				[id]="model.getId('select')">
 				<!-- add width 0; since the carbon styles don't seem to constrain this headers width -->
 			</th>
 			<th
 				ibmTableHeadCheckbox
 				*ngIf="!skeleton && showSelectionColumn && !enableSingleSelect"
+				scope="col"
 				[checked]="selectAllCheckbox"
 				[indeterminate]="selectAllCheckboxSomeSelected"
 				[ariaLabel]="getCheckboxHeaderLabel()"
 				[size]="size"
 				[skeleton]="skeleton"
-				(change)="onSelectAllCheckboxChange()">
+				[name]="model.getHeaderId('select')"
+				(change)="onSelectAllCheckboxChange()"
+				[id]="model.getId('select')">
 			</th>
 			<ng-container *ngFor="let column of model.header; let i = index">
 				<th
+					*ngIf="column && column.visible"
+					[ngStyle]="column.style"
 					ibmTableHeadCell
-					[column]="column"
-					[filterTitle]="getFilterTitle()"
-					(sort)="sort.emit(i)"
-					*ngIf="column.visible"
+					scope="col"
 					[class]="column.className"
-					[ngStyle]="column.style">
+					[sortable]="sortable"
+					[skeleton]="skeleton"
+					[id]="model.getId(i)"
+					[column]="column"
+					[skeleton]="skeleton"
+					[filterTitle]="getFilterTitle()"
+					[attr.colspan]="column.colSpan"
+					[attr.rowspan]="column.rowSpan"
+					(sort)="sort.emit(i)">
 				</th>
 			</ng-container>
-			<th *ngIf="!skeleton && stickyHeader && scrollbarWidth" [ngStyle]="{'width': scrollbarWidth + 'px', 'padding': 0, 'border': 0}">
+			<th *ngIf="!skeleton && stickyHeader && scrollbarWidth"
+				scope="col"
+				[ngStyle]="{'width': scrollbarWidth + 'px', 'padding': 0, 'border': 0}">
 				<!--
 					Scrollbar pushes body to the left so this header column is added to push
 					the title bar the same amount and keep the header and body columns aligned.
@@ -60,9 +83,14 @@ import { Observable } from "rxjs";
 		</tr>
 	</ng-container>
 	<ng-content></ng-content>
-	`
+	`,
+	styles: [`
+		.bx--table-expand-v2 {
+			padding-left: 2.5rem;
+		}
+	`]
 })
-export class TableHead {
+export class TableHead implements AfterViewInit {
 	@Input() model: TableModel;
 
 	@Input() showSelectionColumn = true;
@@ -78,9 +106,15 @@ export class TableHead {
 	@Input() stickyHeader = false;
 
 	/**
+	 * Setting sortable to false will disable all headers including headers which are sortable. Is is
+	 * possible to set the sortable state on the header item to disable/enable sorting for only some headers.
+	 */
+	@Input() sortable = true;
+
+	/**
 	 * Size of the table rows.
 	 */
-	@Input() size: "sm" | "sh" | "md" | "lg" = "md";
+	@Input() size: TableRowSize = "md";
 
 	@Input()
 	set checkboxHeaderLabel(value: string | Observable<string>) {
@@ -144,8 +178,14 @@ export class TableHead {
 
 	constructor(protected i18n: I18n) {}
 
+	ngAfterViewInit() {
+		setTimeout(() => {
+			this.scrollbarWidth = getScrollbarWidth();
+		});
+	}
+
 	onSelectAllCheckboxChange() {
-		if (!this.selectAllCheckbox) {
+		if (!this.selectAllCheckbox && !this.selectAllCheckboxSomeSelected) {
 			this.selectAll.emit(this.model);
 		} else {
 			this.deselectAll.emit(this.model);

@@ -55,6 +55,17 @@ export default {
 		"COPY_CODE": "Copy code",
 		"COPIED": "Copied!"
 	},
+	"COMBOBOX": {
+		"PLACEHOLDER": "Filter...",
+		"CLEAR_SELECTIONS": "Clear all selected items",
+		"CLEAR_SELECTED": "Clear selected item",
+		"A11Y": {
+			"OPEN_MENU": "open menu",
+			"CLOSE_MENU": "close menu",
+			"CLEAR_SELECTIONS": "Clear all selected items",
+			"CLEAR_SELECTED": "Clear Selection"
+		}
+	},
 	"DIALOG": {
 		"POPOVER" : {
 			"CLOSE": "Close popover"
@@ -63,7 +74,7 @@ export default {
 	"DROPDOWN": {
 		"OPEN": "Open menu",
 		"SELECTED": "selected",
-		"CLEAR": "Clear selection",
+		"CLEAR": "Clear all selected items",
 		"FILTER": {
 			"SELECTED_ONLY": "Show selected only",
 			"SEARCH": "Search",
@@ -90,6 +101,10 @@ export default {
 	"NOTIFICATION": {
 		"CLOSE_BUTTON": "Close alert notification"
 	},
+	"NUMBER": {
+		"INCREMENT": "increment value",
+		"DECREMENT": "decrement value"
+	},
 	"OVERFLOW_MENU": {
 		"OVERFLOW": "Overflow"
 	},
@@ -106,9 +121,12 @@ export default {
 		"FORWARD": "Forward",
 		"TOTAL_ITEMS_UNKNOWN": "{{start}}-{{end}} items",
 		"TOTAL_ITEMS": "{{start}}-{{end}} of {{total}} items",
-		"TOTAL_PAGES": "{{current}} of {{last}} pages",
+		"TOTAL_ITEM": "{{start}}-{{end}} of {{total}} item",
 		"PAGE": "page",
-		"OF_LAST_PAGES": "of {{last}} pages"
+		"OF_LAST_PAGES": "of {{last}} pages",
+		"OF_LAST_PAGE": "of {{last}} page",
+		"NEXT": "Next",
+		"PREVIOUS": "Previous"
 	},
 	"TABLE": {
 		"GO_TO_PAGE": "Go to page",
@@ -127,7 +145,10 @@ export default {
 		"ROW": "row"
 	},
 	"TABLE_TOOLBAR": {
-		"ACTION_BAR": "Table Action Bar",
+		"ACTION_BAR": "Table action bar",
+		"BATCH_TEXT": "",
+		"BATCH_TEXT_SINGLE": "1 item selected",
+		"BATCH_TEXT_MULTIPLE": "{{count}} items selected",
 		"CANCEL": "Cancel"
 	},
 	"TABS": {
@@ -146,7 +167,8 @@ export default {
 	"UI_SHELL": {
 		"SKIP_TO": "Skip to content",
 		"HEADER": {
-			"MENU": "Open menu"
+			"OPEN_MENU": "Open menu",
+			"CLOSE_MENU": "Close menu"
 		},
 		"SIDE_NAV": {
 			"LABEL": "Side navigation",

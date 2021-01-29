@@ -58,6 +58,45 @@ export class TableItem {
 	expandedTemplate: TemplateRef<any>;
 
 	/**
+	 * The number of rows to span
+	 */
+	rowSpan = 1;
+
+	/**
+	 * The number of columns to span
+	 */
+	colSpan = 1;
+
+	get title() {
+		if (this._title) {
+			return this._title;
+		}
+
+		if (!this.data) {
+			return "";
+		}
+
+		if (typeof this.data === "string") {
+			return this.data;
+		}
+
+		if (
+			this.data.toString &&
+			this.data.constructor !== ({}).constructor
+		) {
+			return this.data.toString();
+		}
+
+		return JSON.stringify(this.data);
+	}
+
+	set title(title) {
+		this._title = title;
+	}
+
+	private _title: string;
+
+	/**
 	 * Creates an instance of TableItem.
 	 */
 	constructor(rawData?: any) {
@@ -67,9 +106,10 @@ export class TableItem {
 		};
 		// fill our object with provided props, and fallback to defaults
 		const data = Object.assign({}, defaults, rawData);
-		this.data = data.data;
-		this.expandedData = data.expandedData;
-		this.template = data.template;
-		this.expandedTemplate = data.expandedTemplate;
+		for (const property of Object.getOwnPropertyNames(data)) {
+			if (data.hasOwnProperty(property)) {
+				this[property] = data[property];
+			}
+		}
 	}
 }

@@ -16,13 +16,27 @@ import {
 } from "@angular/forms";
 import {
 	Component,
-	Input,
 	Output,
-	EventEmitter
+	EventEmitter,
+	Input
 } from "@angular/core";
-import { DatePickerModule, DocumentationModule } from "../";
-import { ButtonModule } from "../forms/forms.module";
-import { TabsModule } from "../tabs/tabs.module";
+import { DatePickerModule } from "../datepicker/index";
+import { ButtonModule } from "../forms/index";
+import { TabsModule } from "../tabs/index";
+import { ModalModule, BaseModal } from "../modal/index";
+import { DocumentationModule } from "./../documentation-component/documentation.module";
+
+const modalText =
+	`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi non egestas neque.
+	Etiam aliquet nisl non volutpat vehicula.
+	Aliquam finibus sapien et erat suscipit euismod.
+	Sed dapibus condimentum nisl, eu condimentum felis tempor sit amet. Pellentesque tempus velit vel nisi scelerisque facilisis.
+	Ut dapibus nibh ac suscipit venenatis.
+	Aliquam ex purus, consequat eu volutpat vel, scelerisque vel leo. Nunc congue tellus lectus, pretium lobortis erat mattis congue.
+	Ut dapibus nibh ac suscipit venenatis.
+	Aliquam ex purus, consequat eu volutpat vel, scelerisque vel leo. Nunc congue tellus lectus, pretium lobortis erat mattis congue.
+	Integer facilisis, erat nec iaculis gravida, est libero ornare mauris, venenatis mollis risus eros et metus.
+	Sed ornare massa tristique arcu pulvinar fermentum.`;
 
 @Component({
 	selector: "app-date-picker",
@@ -84,7 +98,29 @@ class DatePickerStory {
 	}
 }
 
-storiesOf("Date Picker", module)
+@Component({
+	selector: "app-date-picker-modal",
+	template: `
+        <ibm-modal [open]="true">
+            <ibm-modal-header>Header label</ibm-modal-header>
+            <section class="bx--modal-content">
+                <h1>Sample modal works.</h1>
+                <p class="bx--modal-content__text">{{modalText}}</p>
+                <ibm-date-picker
+                    label="Date Picker Label"
+                    rangeLabel="Date Picker Label"
+                    invalidText="Invalid date format">
+                </ibm-date-picker>
+                <p class="bx--modal-content__text">{{modalText}}</p>
+            </section>
+        </ibm-modal>
+    `
+})
+class DatePickerModalStory {
+	@Input() modalText: string;
+}
+
+storiesOf("Components|Date Picker", module)
 	.addDecorator(
 		moduleMetadata({
 			imports: [
@@ -93,10 +129,12 @@ storiesOf("Date Picker", module)
 				ReactiveFormsModule,
 				DocumentationModule,
 				ButtonModule,
-				TabsModule
+				TabsModule,
+				ModalModule
 			],
 			declarations: [
-				DatePickerStory
+				DatePickerStory,
+				DatePickerModalStory
 			]
 		})
 	)
@@ -108,6 +146,7 @@ storiesOf("Date Picker", module)
 			[label]="label"
 			[placeholder]="placeholder"
 			[disabled]="disabled"
+			[size]="size"
 			[invalid]="invalid"
 			[invalidText]="invalidText"
 			(valueChange)="valueChange($event)">
@@ -119,6 +158,7 @@ storiesOf("Date Picker", module)
 			placeholder: text("Placeholder text", "mm/dd/yyyy"),
 			invalidText: text("Form validation content", "Invalid date format"),
 			invalid: boolean("Show form validation", false),
+			size: select("Size", ["sm", "md", "xl"], "md"),
 			disabled: boolean("Disabled", false),
 			valueChange: action("Date change fired!")
 		}
@@ -128,7 +168,10 @@ storiesOf("Date Picker", module)
 			<p>With initial value</p>
 			<ibm-date-picker
 				[label]="label"
+				id="initial-value-datepicker"
 				[placeholder]="placeholder"
+				[language]="language"
+				[size]="size"
 				[theme]="theme"
 				[value]="value"
 				[disabled]="disabled"
@@ -141,6 +184,8 @@ storiesOf("Date Picker", module)
 			<ibm-date-picker
 				[label]="label"
 				[placeholder]="placeholder"
+				[language]="language"
+				[size]="size"
 				[theme]="theme"
 				[disabled]="disabled"
 				[invalid]="invalid"
@@ -150,6 +195,8 @@ storiesOf("Date Picker", module)
 			</ibm-date-picker>
 		`,
 		props: {
+			language: select("Calendar language", ["en", "de", "fi", "ja", "zh", "es", "fr", "it", "ko", "pt"], "en"),
+			size: select("Size", ["sm", "md", "xl"], "md"),
 			valueChange: action("Date change fired!"),
 			theme: select("Theme", ["dark", "light"], "dark"),
 			label: text("Label text", "Date Picker Label"),
@@ -167,12 +214,17 @@ storiesOf("Date Picker", module)
 		<ibm-date-picker
 			[label]="label"
 			[rangeLabel]="label"
+			[size]="size"
 			range="true"
+			id="initial-value-datepicker"
 			[placeholder]="placeholder"
+			[language]="language"
 			[theme]="theme"
 			[disabled]="disabled"
 			[invalid]="invalid"
 			[invalidText]="invalidText"
+			[rangeInvalid]="invalid"
+			[rangeInvalidText]="invalidText"
 			[dateFormat]="dateFormat"
 			[value]="value"
 			(valueChange)="valueChange($event)">
@@ -181,7 +233,9 @@ storiesOf("Date Picker", module)
 		<ibm-date-picker
 			[label]="label"
 			[rangeLabel]="label"
+			[size]="size"
 			range="true"
+			[language]="language"
 			[placeholder]="placeholder"
 			[theme]="theme"
 			[disabled]="disabled"
@@ -192,6 +246,8 @@ storiesOf("Date Picker", module)
 		</ibm-date-picker>
 		`,
 		props: {
+			language: select("Calendar language", ["en", "de", "fi", "ja", "zh", "es", "fr", "it", "ko", "pt"], "en"),
+			size: select("Size", ["sm", "md", "xl"], "md"),
 			valueChange: action("Date change fired!"),
 			theme: select("Theme", ["dark", "light"], "dark"),
 			label: text("Label text", "Date Picker Label"),
@@ -218,6 +274,7 @@ storiesOf("Date Picker", module)
 			<div>
 				<ibm-date-picker
 					label="Date picker label"
+					[size]="size"
 					[(ngModel)]="single">
 				</ibm-date-picker>
 				<button
@@ -237,6 +294,7 @@ storiesOf("Date Picker", module)
 			</div>
 			<div style="margin-top: 15px;">
 				<ibm-date-picker
+					[size]="size"
 					label="Date picker"
 					rangeLabel="Range label"
 					range="true"
@@ -260,6 +318,7 @@ storiesOf("Date Picker", module)
 		`,
 		props: {
 			date: new Date(new Date().getFullYear(), 5, 15),
+			size: select("Size", ["sm", "md", "xl"], "md"),
 			rangeDates: [
 				new Date(new Date().getFullYear(), 5, 15),
 				new Date(new Date().getFullYear(), 8, 19)
@@ -274,6 +333,7 @@ storiesOf("Date Picker", module)
 					<p>With initial value</p>
 					<ibm-date-picker
 						[label]="label"
+						[size]="size"
 						[placeholder]="placeholder"
 						[theme]="theme"
 						[value]="value"
@@ -286,6 +346,7 @@ storiesOf("Date Picker", module)
 					<p style="margin-top: 20px;">Without initial value</p>
 					<ibm-date-picker
 						[label]="label"
+						[size]="size"
 						[placeholder]="placeholder"
 						[theme]="theme"
 						[disabled]="disabled"
@@ -300,6 +361,7 @@ storiesOf("Date Picker", module)
 					<ibm-date-picker
 						[label]="label"
 						[placeholder]="placeholder"
+						[size]="size"
 						[theme]="theme"
 						[value]="value"
 						[disabled]="disabled"
@@ -312,6 +374,7 @@ storiesOf("Date Picker", module)
 					<ibm-date-picker
 						[label]="label"
 						[placeholder]="placeholder"
+						[size]="size"
 						[theme]="theme"
 						[disabled]="disabled"
 						[invalid]="invalid"
@@ -325,6 +388,7 @@ storiesOf("Date Picker", module)
 		`,
 		props: {
 			valueChange: action("Date change fired!"),
+			size: select("Size", ["sm", "md", "xl"], "md"),
 			theme: select("Theme", ["dark", "light"], "dark"),
 			label: text("Label text", "Date Picker Label"),
 			placeholder: text("Placeholder text", "mm/dd/yyyy"),
@@ -333,6 +397,12 @@ storiesOf("Date Picker", module)
 			disabled: boolean("Disabled", false),
 			dateFormat: text("Date format", "m/d/Y"),
 			value: array("Value", ["10/19/2019"])
+		}
+	}))
+	.add("In modal", () => ({
+		template: `<app-date-picker-modal [modalText]="modalText"></app-date-picker-modal>`,
+		props: {
+			modalText: text("modal text", modalText)
 		}
 	}))
 	.add("Skeleton", () => ({
@@ -345,6 +415,6 @@ storiesOf("Date Picker", module)
 	}))
 	.add("Documentation", () => ({
 		template: `
-			<ibm-documentation src="documentation/components/DatePicker.html"></ibm-documentation>
+			<ibm-documentation src="documentation/classes/src_datepicker.datepicker.html"></ibm-documentation>
 		`
 	}));

@@ -109,3 +109,5 @@ To keep our build dependencies local we use npm scripts to run our webpack, gulp
   - Likewise, stateless components should be favored whenever possible
 - Components should NOT *necessarily* implement the style guide point-for-point, the guide simply provides guidance on overarching functionality, components should enable that and product specific designs **without** baking in extra functionality
 
+## Code of Conduct
+Read our code of conduct [here](./.github/CODE_OF_CONDUCT.md)

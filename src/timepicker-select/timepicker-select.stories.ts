@@ -1,9 +1,10 @@
-import { TimePickerSelectModule } from "./timepicker-select.module";
+import { TimePickerSelectModule } from "./index";
 import { storiesOf, moduleMetadata } from "@storybook/angular";
 import { withKnobs } from "@storybook/addon-knobs/angular";
-import { ExperimentalModule, DocumentationModule } from "../";
+import { ExperimentalModule } from "../";
+import { DocumentationModule } from "../documentation-component/documentation.module";
 
-storiesOf("Time Picker Select", module)
+storiesOf("Components|Time Picker Select", module)
 	.addDecorator(
 		moduleMetadata({
 			imports: [
@@ -32,6 +33,6 @@ storiesOf("Time Picker Select", module)
 	}))
 	.add("Documentation", () => ({
 		template: `
-			<ibm-documentation src="documentation/components/TimePickerSelect.html"></ibm-documentation>
+			<ibm-documentation src="documentation/classes/src_timepicker_select.timepickerselect.html"></ibm-documentation>
 		`
 	}));

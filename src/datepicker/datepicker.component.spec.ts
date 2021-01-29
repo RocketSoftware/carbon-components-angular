@@ -3,9 +3,10 @@ import { By } from "@angular/platform-browser";
 import { Component } from "@angular/core";
 import { DatePicker } from "./datepicker.component";
 import { DatePickerInput } from "../datepicker-input/datepicker-input.component";
-import { Calendar16Module } from "@rocketsoftware/icons-angular/lib/calendar/16";
-import { FormsModule, Validators } from "@angular/forms";
-import { tick } from "@angular/core/src/render3";
+import { IconModule } from "../icon/index";
+import { FormsModule } from "@angular/forms";
+import { UtilsModule } from "../utils/utils.module";
+import { I18nModule } from "../i18n/i18n.module";
 
 @Component({
 	template: `
@@ -39,8 +40,10 @@ describe("DatePicker", () => {
 				DatePickerInput
 			],
 			imports: [
-				Calendar16Module,
-				FormsModule
+				IconModule,
+				UtilsModule,
+				FormsModule,
+				I18nModule
 			]
 		});
 	});
