@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
 // imports
-import { I18nModule } from "carbon-components-angular/i18n";
+import { I18nModule } from "@rocketsoftware/carbon-components-angular/i18n";
 import { Toggle } from "./toggle.component";
 
 @NgModule({

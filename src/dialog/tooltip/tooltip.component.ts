@@ -5,12 +5,12 @@ import {
 	ElementRef,
 	Optional
 } from "@angular/core";
-import { getFocusElementList } from "carbon-components-angular/common";
+import { getFocusElementList } from "@rocketsoftware/carbon-components-angular/common";
 
 import { Dialog } from "../dialog.component";
 import { position } from "@carbon/utils-position";
-import { AnimationFrameService, ElementService } from "carbon-components-angular/utils";
-import { closestAttr } from "carbon-components-angular/utils";
+import { AnimationFrameService, ElementService } from "@rocketsoftware/carbon-components-angular/utils";
+import { closestAttr } from "@rocketsoftware/carbon-components-angular/utils";
 
 /**
  * Extend the `Dialog` component to create a tooltip for exposing content.

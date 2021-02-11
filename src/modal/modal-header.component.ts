@@ -4,8 +4,8 @@ import {
 	EventEmitter,
 	Input
 } from "@angular/core";
-import { I18n } from "carbon-components-angular/i18n";
-import { ExperimentalService } from "carbon-components-angular/experimental";
+import { I18n } from "@rocketsoftware/carbon-components-angular/i18n";
+import { ExperimentalService } from "@rocketsoftware/carbon-components-angular/experimental";
 
 /**
  * ***Inputs***

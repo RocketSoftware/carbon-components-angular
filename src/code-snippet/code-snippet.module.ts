@@ -2,9 +2,9 @@
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { IconModule } from "carbon-components-angular/icon";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
-import { I18nModule } from "carbon-components-angular/i18n";
+import { I18nModule } from "@rocketsoftware/carbon-components-angular/i18n";
 
 // imports
 import { CodeSnippet } from "./code-snippet.component";

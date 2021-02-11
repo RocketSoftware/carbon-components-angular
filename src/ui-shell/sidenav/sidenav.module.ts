@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
-import { I18nModule } from "carbon-components-angular/i18n";
+import { I18nModule } from "@rocketsoftware/carbon-components-angular/i18n";
 
 import { SideNav } from "./sidenav.component";
 import { SideNavItem } from "./sidenav-item.component";

@@ -1,4 +1,4 @@
-import { Checkbox } from "carbon-components-angular/checkbox";
+import { Checkbox } from "@rocketsoftware/carbon-components-angular/checkbox";
 import {
 	ChangeDetectorRef,
 	Component,
@@ -9,7 +9,7 @@ import {
 } from "@angular/core";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
 
-import { I18n, Overridable } from "carbon-components-angular/i18n";
+import { I18n, Overridable } from "@rocketsoftware/carbon-components-angular/i18n";
 import { Observable } from "rxjs";
 
 /**

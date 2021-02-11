@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 
 import { Accordion } from "./accordion.component";
 import { AccordionItem } from "./accordion-item.component";
-import { IconModule } from "carbon-components-angular/icon";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
 @NgModule({
 	declarations: [

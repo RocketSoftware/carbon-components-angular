@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "carbon-components-angular": {
+    "@rocketsoftware/carbon-components-angular": {
       "root": "src",
       "sourceRoot": "src",
       "projectType": "library",
@@ -43,7 +43,7 @@
         }
       }
     },
-    "carbon-components-angular-e2e": {
+    "@rocketsoftware/carbon-components-angular-e2e": {
       "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -52,7 +52,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "carbon-components-angular:serve"
+            "devServerTarget": "@rocketsoftware/carbon-components-angular:serve"
           }
         },
         "lint": {

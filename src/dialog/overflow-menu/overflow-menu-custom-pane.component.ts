@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, Optional } from "@angular/core";
 import { position } from "@carbon/utils-position";
-import { I18n } from "carbon-components-angular/i18n";
-import { AnimationFrameService, ElementService } from "carbon-components-angular/utils";
-import { closestAttr } from "carbon-components-angular/utils";
+import { I18n } from "@rocketsoftware/carbon-components-angular/i18n";
+import { AnimationFrameService, ElementService } from "@rocketsoftware/carbon-components-angular/utils";
+import { closestAttr } from "@rocketsoftware/carbon-components-angular/utils";
 import { Dialog } from "../dialog.component";
 
 @Component({

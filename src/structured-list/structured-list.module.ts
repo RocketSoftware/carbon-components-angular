@@ -5,7 +5,7 @@ import { StructuredList } from "./structured-list.component";
 import { ListRow } from "./list-row.component";
 import { ListHeader } from "./list-header.component";
 import { ListColumn } from "./list-column.component";
-import { IconModule } from "carbon-components-angular/icon";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
 @NgModule({
 	declarations: [

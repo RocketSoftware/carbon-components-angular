@@ -4,7 +4,7 @@ import {
 	Output,
 	EventEmitter, OnChanges, SimpleChanges
 } from "@angular/core";
-import { ExperimentalService } from "carbon-components-angular/experimental";
+import { ExperimentalService } from "@rocketsoftware/carbon-components-angular/experimental";
 import { Step } from "./progress-indicator-step.interface";
 
 /**

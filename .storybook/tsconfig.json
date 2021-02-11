@@ -25,7 +25,7 @@
 			"./../demo/typings.d.ts"
 		],
 		"paths": {
-			"carbon-components-angular/*": [
+			"@rocketsoftware/carbon-components-angular/*": [
 				"./../src/*/index"
 			]
 		}

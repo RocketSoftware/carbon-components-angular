@@ -7,11 +7,11 @@ import { DropdownList } from "./list/dropdown-list.component";
 import { AbstractDropdownView } from "./abstract-dropdown-view.class";
 
 import { ScrollableList } from "./scrollable-list.directive";
-import { I18nModule } from "carbon-components-angular/i18n";
-import { PlaceholderModule } from "carbon-components-angular/placeholder";
+import { I18nModule } from "@rocketsoftware/carbon-components-angular/i18n";
+import { PlaceholderModule } from "@rocketsoftware/carbon-components-angular/placeholder";
 import { DropdownService } from "./dropdown.service";
-import { UtilsModule } from "carbon-components-angular/utils";
-import { IconModule } from "carbon-components-angular/icon";
+import { UtilsModule } from "@rocketsoftware/carbon-components-angular/utils";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
 @NgModule({
 	declarations: [

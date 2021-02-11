@@ -5,7 +5,7 @@ import {
 	EventEmitter,
 	HostBinding
 } from "@angular/core";
-import { I18n, Overridable } from "carbon-components-angular/i18n";
+import { I18n, Overridable } from "@rocketsoftware/carbon-components-angular/i18n";
 import { Observable } from "rxjs";
 
 @Component({

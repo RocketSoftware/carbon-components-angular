@@ -11,7 +11,7 @@ import { DialogDirective } from "../dialog.directive";
 import { DialogService } from "../dialog.service";
 import { OverflowMenuPane } from "./overflow-menu-pane.component";
 import { OverflowMenuCustomPane } from "./overflow-menu-custom-pane.component";
-import { EventService } from "carbon-components-angular/utils";
+import { EventService } from "@rocketsoftware/carbon-components-angular/utils";
 
 
 /**

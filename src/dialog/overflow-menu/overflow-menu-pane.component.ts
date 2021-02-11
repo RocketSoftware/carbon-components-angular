@@ -7,12 +7,12 @@ import {
 } from "@angular/core";
 import { Dialog } from "../dialog.component";
 import { position } from "@carbon/utils-position";
-import { isFocusInLastItem, isFocusInFirstItem } from "carbon-components-angular/common";
-import { I18n } from "carbon-components-angular/i18n";
-import { ExperimentalService } from "carbon-components-angular/experimental";
-import { AnimationFrameService, ElementService } from "carbon-components-angular/utils";
+import { isFocusInLastItem, isFocusInFirstItem } from "@rocketsoftware/carbon-components-angular/common";
+import { I18n } from "@rocketsoftware/carbon-components-angular/i18n";
+import { ExperimentalService } from "@rocketsoftware/carbon-components-angular/experimental";
+import { AnimationFrameService, ElementService } from "@rocketsoftware/carbon-components-angular/utils";
 import { CloseReasons } from "../dialog-config.interface";
-import { closestAttr } from "carbon-components-angular/utils";
+import { closestAttr } from "@rocketsoftware/carbon-components-angular/utils";
 
 /**
  * Extend the `Dialog` component to create an overflow menu.

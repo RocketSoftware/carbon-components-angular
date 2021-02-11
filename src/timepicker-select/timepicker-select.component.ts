@@ -6,7 +6,7 @@ import {
 	HostBinding,
 	TemplateRef
 } from "@angular/core";
-import { Select } from "carbon-components-angular/select";
+import { Select } from "@rocketsoftware/carbon-components-angular/select";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
 
 /**

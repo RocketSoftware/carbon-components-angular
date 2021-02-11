@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
-import { I18nModule } from "carbon-components-angular/i18n";
-import { IconModule } from "carbon-components-angular/icon";
+import { I18nModule } from "@rocketsoftware/carbon-components-angular/i18n";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
 import { Header } from "./header.component";
 import { HeaderItem } from "./header-item.component";

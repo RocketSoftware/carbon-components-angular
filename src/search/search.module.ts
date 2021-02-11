@@ -4,9 +4,9 @@ import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
 // imports
-import { I18nModule } from "carbon-components-angular/i18n";
+import { I18nModule } from "@rocketsoftware/carbon-components-angular/i18n";
 import { Search } from "./search.component";
-import { IconModule } from "carbon-components-angular/icon";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
 @NgModule({
 	declarations: [

@@ -4,7 +4,7 @@ import {
 	EventEmitter,
 	Input
 } from "@angular/core";
-import { I18n } from "carbon-components-angular/i18n";
+import { I18n } from "@rocketsoftware/carbon-components-angular/i18n";
 
 /**
  * A toggle for the side navigation

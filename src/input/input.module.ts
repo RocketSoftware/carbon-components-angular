@@ -7,7 +7,7 @@ import { CommonModule } from "@angular/common";
 import { Label } from "./label.component";
 import { TextInput } from "./input.directive";
 import { TextArea } from "./text-area.directive";
-import { IconModule } from "carbon-components-angular/icon";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
 @NgModule({
 	declarations: [

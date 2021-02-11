@@ -4,12 +4,12 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
 // internal module imports
-import { NFormsModule } from "carbon-components-angular/forms";
-import { DialogModule } from "carbon-components-angular/dialog";
-import { I18nModule } from "carbon-components-angular/i18n";
-import { ButtonModule } from "carbon-components-angular/button";
-import { SearchModule } from "carbon-components-angular/search";
-import { IconModule } from "carbon-components-angular/icon";
+import { NFormsModule } from "@rocketsoftware/carbon-components-angular/forms";
+import { DialogModule } from "@rocketsoftware/carbon-components-angular/dialog";
+import { I18nModule } from "@rocketsoftware/carbon-components-angular/i18n";
+import { ButtonModule } from "@rocketsoftware/carbon-components-angular/button";
+import { SearchModule } from "@rocketsoftware/carbon-components-angular/search";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
 // table utilities/toolbar imports
 import { TableToolbar } from "./toolbar/table-toolbar.component";

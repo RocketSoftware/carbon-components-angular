@@ -7,7 +7,7 @@ import {
 	HostListener
 } from "@angular/core";
 import { TableModel } from "../table-model.class";
-import { I18n, Overridable } from "carbon-components-angular/i18n";
+import { I18n, Overridable } from "@rocketsoftware/carbon-components-angular/i18n";
 import { TableItem } from "../table-item.class";
 import { Observable } from "rxjs";
 import { TableRowSize } from "../table.types";

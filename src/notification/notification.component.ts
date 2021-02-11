@@ -9,7 +9,7 @@ import {
 } from "@angular/core";
 
 import { NotificationContent } from "./notification-content.interface";
-import { I18n } from "carbon-components-angular/i18n";
+import { I18n } from "@rocketsoftware/carbon-components-angular/i18n";
 import { NotificationDisplayService } from "./notification-display.service";
 import { of, isObservable, Subject } from "rxjs";
 

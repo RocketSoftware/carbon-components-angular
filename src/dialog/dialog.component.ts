@@ -17,9 +17,9 @@ import {
 } from "rxjs";
 // the AbsolutePosition is required to import the declaration correctly
 import Position, { position, AbsolutePosition, Positions } from "@carbon/utils-position";
-import { cycleTabs, getFocusElementList } from "carbon-components-angular/common";
+import { cycleTabs, getFocusElementList } from "@rocketsoftware/carbon-components-angular/common";
 import { CloseMeta, CloseReasons, DialogConfig } from "./dialog-config.interface";
-import { AnimationFrameService, ElementService } from "carbon-components-angular/utils";
+import { AnimationFrameService, ElementService } from "@rocketsoftware/carbon-components-angular/utils";
 
 /**
  * Implements a `Dialog` that can be positioned anywhere on the page.

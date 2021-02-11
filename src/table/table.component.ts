@@ -16,9 +16,9 @@ import { TableModel } from "./table-model.class";
 import { TableHeaderItem } from "./table-header-item.class";
 import { TableItem } from "./table-item.class";
 
-import { getFocusElementList, tabbableSelectorIgnoreTabIndex } from "carbon-components-angular/common";
-import { I18n, Overridable } from "carbon-components-angular/i18n";
-import { merge } from "carbon-components-angular/utils";
+import { getFocusElementList, tabbableSelectorIgnoreTabIndex } from "@rocketsoftware/carbon-components-angular/common";
+import { I18n, Overridable } from "@rocketsoftware/carbon-components-angular/i18n";
+import { merge } from "@rocketsoftware/carbon-components-angular/utils";
 import { DataGridInteractionModel } from "./data-grid-interaction-model.class";
 import { TableDomAdapter } from "./table-adapter.class";
 import { TableRowSize } from "./table.types";

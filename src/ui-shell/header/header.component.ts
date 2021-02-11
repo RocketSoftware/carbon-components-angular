@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import { I18n } from "carbon-components-angular/i18n";
+import { I18n } from "@rocketsoftware/carbon-components-angular/i18n";
 
 /**
  * A fixed header and navigation.

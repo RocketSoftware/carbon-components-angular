@@ -8,28 +8,28 @@ export {
 	CheckboxChange,
 	CheckboxState,
 	CheckboxValue
-} from "carbon-components-angular/checkbox";
+} from "@rocketsoftware/carbon-components-angular/checkbox";
 export {
 	ToggleModule,
 	Toggle,
 	ToggleChange,
 	ToggleState
-} from "carbon-components-angular/toggle";
+} from "@rocketsoftware/carbon-components-angular/toggle";
 export {
 	RadioModule,
 	Radio,
 	RadioChange,
 	RadioGroup
-} from "carbon-components-angular/radio";
+} from "@rocketsoftware/carbon-components-angular/radio";
 export {
 	InputModule,
 	Label,
 	TextArea,
 	TextInput
-} from "carbon-components-angular/input";
+} from "@rocketsoftware/carbon-components-angular/input";
 export {
 	ButtonModule,
 	Button,
 	ButtonSize,
 	ButtonType
-} from "carbon-components-angular/button";
+} from "@rocketsoftware/carbon-components-angular/button";

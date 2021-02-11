@@ -23,7 +23,7 @@
 			"./node_modules/@types"
 		],
 		"paths": {
-			"carbon-components-angular/*": [
+			"@rocketsoftware/carbon-components-angular/*": [
 				"./src/*/index"
 			]
 		}

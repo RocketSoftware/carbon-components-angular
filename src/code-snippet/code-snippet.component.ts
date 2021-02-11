@@ -7,7 +7,7 @@ import {
 	AfterViewInit
 } from "@angular/core";
 
-import { I18n } from "carbon-components-angular/i18n";
+import { I18n } from "@rocketsoftware/carbon-components-angular/i18n";
 
 export enum SnippetType {
 	single = "single",

@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { ButtonModule } from "carbon-components-angular/button";
+import { ButtonModule } from "@rocketsoftware/carbon-components-angular/button";
 import { CommonModule } from "@angular/common";
 
 import { Toast } from "./toast.component";
@@ -11,10 +11,10 @@ import { NotificationSubtitle } from "./notification-subtitle.directive";
 import { Notification } from "./notification.component";
 import { NotificationService } from "./notification.service";
 import { NotificationDisplayService } from "./notification-display.service";
-import { I18nModule } from "carbon-components-angular/i18n";
-import { ExperimentalModule } from "carbon-components-angular/experimental";
-import { LinkModule } from "carbon-components-angular/link";
-import { IconModule } from "carbon-components-angular/icon";
+import { I18nModule } from "@rocketsoftware/carbon-components-angular/i18n";
+import { ExperimentalModule } from "@rocketsoftware/carbon-components-angular/experimental";
+import { LinkModule } from "@rocketsoftware/carbon-components-angular/link";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
 @NgModule({
 	declarations: [

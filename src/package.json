@@ -1,5 +1,5 @@
 {
-  "name": "carbon-components-angular",
+  "name": "@rocketsoftware/carbon-components-angular",
   "version": "0.0.0",
   "description": "Next generation components",
   "main": "index.js",

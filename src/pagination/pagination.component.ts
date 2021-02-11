@@ -6,9 +6,9 @@ import {
 	EventEmitter
 } from "@angular/core";
 
-import { I18n, Overridable } from "carbon-components-angular/i18n";
-import { ExperimentalService } from "carbon-components-angular/experimental";
-import { merge } from "carbon-components-angular/utils";
+import { I18n, Overridable } from "@rocketsoftware/carbon-components-angular/i18n";
+import { ExperimentalService } from "@rocketsoftware/carbon-components-angular/experimental";
+import { merge } from "@rocketsoftware/carbon-components-angular/utils";
 
 export interface PaginationTranslations {
 	ITEMS_PER_PAGE: string;

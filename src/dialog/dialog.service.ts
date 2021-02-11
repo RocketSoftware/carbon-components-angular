@@ -7,9 +7,9 @@ import {
 	ViewContainerRef
 } from "@angular/core";
 import { CloseReasons, DialogConfig } from "./dialog-config.interface";
-import { PlaceholderService } from "carbon-components-angular/placeholder";
+import { PlaceholderService } from "@rocketsoftware/carbon-components-angular/placeholder";
 import { Dialog } from "./dialog.component";
-import { tabbableSelector } from "carbon-components-angular/common";
+import { tabbableSelector } from "@rocketsoftware/carbon-components-angular/common";
 
 /**
  * `Dialog` object to be injected into other components.

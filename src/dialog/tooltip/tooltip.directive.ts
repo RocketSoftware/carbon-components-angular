@@ -11,7 +11,7 @@ import {
 import { DialogDirective } from "../dialog.directive";
 import { Tooltip } from "./tooltip.component";
 import { DialogService } from "../dialog.service";
-import { EventService } from "carbon-components-angular/utils";
+import { EventService } from "@rocketsoftware/carbon-components-angular/utils";
 
 
 /**

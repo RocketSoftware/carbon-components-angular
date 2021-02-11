@@ -8,7 +8,7 @@ import {
 	AfterViewInit
 } from "@angular/core";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
-import { I18n } from "carbon-components-angular/i18n";
+import { I18n } from "@rocketsoftware/carbon-components-angular/i18n";
 
 @Component({
 	selector: "ibm-selection-tile",

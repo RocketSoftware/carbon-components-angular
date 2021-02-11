@@ -5,8 +5,8 @@ import { CommonModule } from "@angular/common";
 
 // imports
 import { Number } from "./number.component";
-import { I18nModule } from "carbon-components-angular/i18n";
-import { IconModule } from "carbon-components-angular/icon";
+import { I18nModule } from "@rocketsoftware/carbon-components-angular/i18n";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
 @NgModule({
 	declarations: [

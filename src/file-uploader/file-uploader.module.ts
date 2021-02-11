@@ -3,9 +3,9 @@ import { CommonModule } from "@angular/common";
 
 import { FileUploader } from "./file-uploader.component";
 import { FileComponent } from "./file.component";
-import { ButtonModule } from "carbon-components-angular/button";
-import { LoadingModule } from "carbon-components-angular/loading";
-import { IconModule } from "carbon-components-angular/icon";
+import { ButtonModule } from "@rocketsoftware/carbon-components-angular/button";
+import { LoadingModule } from "@rocketsoftware/carbon-components-angular/loading";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
 @NgModule({
 	declarations: [FileUploader, FileComponent],
