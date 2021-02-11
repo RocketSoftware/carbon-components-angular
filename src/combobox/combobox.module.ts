@@ -1,14 +1,11 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { ChevronDown16Module } from "@rocketsoftware/icons-angular/lib/chevron--down/16";
-import { Close16Module } from "@rocketsoftware/icons-angular/lib/close/16";
-import { WarningFilled16Module } from "@rocketsoftware/icons-angular/lib/warning--filled/16";
 
 import { ComboBox } from "./combobox.component";
-import { DropdownModule } from "../dropdown/dropdown.module";
-
-export { ComboBox } from "./combobox.component";
-
+import { DropdownModule, DropdownService } from "@rocketsoftware/carbon-components-angular/dropdown";
+import { I18nModule } from "@rocketsoftware/carbon-components-angular/i18n";
+import { UtilsModule } from "@rocketsoftware/carbon-components-angular/utils";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
 @NgModule({
 	declarations: [
@@ -21,9 +18,10 @@ export { ComboBox } from "./combobox.component";
 	imports: [
 		CommonModule,
 		DropdownModule,
-		ChevronDown16Module,
-		Close16Module,
-		WarningFilled16Module
-	]
+		I18nModule,
+		UtilsModule,
+		IconModule
+	],
+	providers: [ DropdownService ]
 })
 export class ComboBoxModule {}

@@ -1,5 +1,5 @@
 import { map } from "rxjs/operators";
-import { fromEvent, merge } from "rxjs";
+import { fromEvent, merge, Observable } from "rxjs";
 
 
 /**
@@ -27,7 +27,49 @@ export const isScrollableElement = (element: HTMLElement) => {
 export const isVisibleInContainer = (element: HTMLElement, container: HTMLElement) => {
 	const elementRect = element.getBoundingClientRect();
 	const containerRect = container.getBoundingClientRect();
-	return elementRect.bottom <= containerRect.bottom && elementRect.top >= containerRect.top;
+	// If there exists `height: 100%` on the `html` or `body` tag of an application,
+	// it causes the calculation to return true if you need to scroll before the element is seen.
+	// In that case we calculate its visibility based on the window viewport.
+	if (container.tagName === "BODY" || container.tagName === "HTML") {
+		// This checks if element is within the top, bottom, left and right of viewport, ie. if the element is visible in
+		// the screen. This also takes into account partial visibility of an element.
+		const isAboveViewport = elementRect.top < 0 && (elementRect.top + element.clientHeight) < 0;
+		const isLeftOfViewport = elementRect.left < 0;
+		const isBelowViewport =
+			(elementRect.bottom - element.clientHeight) > (window.innerHeight || document.documentElement.clientHeight);
+		const isRightOfViewport = elementRect.right > (window.innerWidth || document.documentElement.clientWidth);
+
+		const isVisibleInViewport = !(isAboveViewport || isBelowViewport || isLeftOfViewport || isRightOfViewport);
+
+		return isVisibleInViewport;
+	}
+	return (
+		// This also accounts for partial visibility. It will still return true if the element is partially visible inside the container.
+		(elementRect.bottom - element.clientHeight) <= (containerRect.bottom + (container.offsetHeight - container.clientHeight) / 2) &&
+		elementRect.top >= (- element.clientHeight)
+	);
+};
+
+
+export const getScrollableParents = (node: HTMLElement) => {
+	const elements = [document.body];
+	while (node.parentElement && node !== document.body) {
+		if (isScrollableElement(node)) {
+			elements.push(node);
+		}
+		node = node.parentElement;
+	}
+	return elements;
+};
+
+export const hasScrollableParents = (node: HTMLElement) => {
+	while (node.parentElement && node !== document.body) {
+		if (isScrollableElement(node)) {
+			return true;
+		}
+		node = node.parentElement;
+	}
+	return false;
 };
 
 /**
@@ -35,8 +77,8 @@ export const isVisibleInContainer = (element: HTMLElement, container: HTMLElemen
  *
  * @param node root element to start finding scrolling parents from
  */
-export const scrollableParentsObservable = (node: HTMLElement) => {
-	const windowScroll = fromEvent(window, "scroll").pipe(map(event => (
+export const scrollableParentsObservable = (node: HTMLElement): Observable<Event> => {
+	const windowScroll = fromEvent(window, "scroll", { passive: true }).pipe(map(event => (
 		// update the event target to be something useful. In this case `body` is a sensible replacement
 		Object.assign({}, event, { target: document.body }) as Event
 	)));
@@ -44,7 +86,7 @@ export const scrollableParentsObservable = (node: HTMLElement) => {
 	// walk the parents and subscribe to all the scroll events we can
 	while (node.parentElement && node !== document.body) {
 		if (isScrollableElement(node)) {
-			observables.push(fromEvent(node, "scroll"));
+			observables.push(fromEvent(node, "scroll", { passive: true }));
 		}
 		node = node.parentElement;
 	}

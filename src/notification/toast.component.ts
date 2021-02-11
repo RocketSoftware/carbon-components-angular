@@ -7,9 +7,9 @@ import {
 
 import { ToastContent } from "./notification-content.interface";
 import { Notification } from "./notification.component";
-import { ExperimentalService } from "./../experimental.module";
+import { ExperimentalService } from "@rocketsoftware/carbon-components-angular/experimental";
 import { NotificationDisplayService } from "./notification-display.service";
-import { I18n } from "./../i18n/i18n.module";
+import { I18n } from "@rocketsoftware/carbon-components-angular/i18n";
 
 /**
  * Toast messages are displayed toward the top of the UI and do not interrupt user’s work.
@@ -21,34 +21,53 @@ import { I18n } from "./../i18n/i18n.module";
 @Component({
 	selector: "ibm-toast",
 	template: `
-		<ibm-icon-error-filled16
-				*ngIf="notificationObj.type === 'error'"
-				class="bx--toast-notification__icon">
-			</ibm-icon-error-filled16>
-			<ibm-icon-warning-filled16
-				*ngIf="notificationObj.type === 'warning'"
-				class="bx--toast-notification__icon">
-			</ibm-icon-warning-filled16>
-			<ibm-icon-checkmark-filled16
-				*ngIf="notificationObj.type === 'success'"
-				class="bx--toast-notification__icon">
-			</ibm-icon-checkmark-filled16>
+		<svg
+			ibmIcon="error--filled"
+			size="16"
+			*ngIf="notificationObj.type === 'error'"
+			class="bx--toast-notification__icon">
+		</svg>
+		<svg
+			ibmIcon="warning--filled"
+			size="16"
+			*ngIf="notificationObj.type === 'warning'"
+			class="bx--toast-notification__icon">
+		</svg>
+		<svg
+			ibmIcon="checkmark--filled"
+			size="16"
+			*ngIf="notificationObj.type === 'success'"
+			class="bx--toast-notification__icon">
+		</svg>
+		<svg
+			ibmIcon="information--filled"
+			size="16"
+			*ngIf="notificationObj.type === 'info'"
+			class="bx--toast-notification__icon">
+		</svg>
 		<div class="bx--toast-notification__details">
-			<h3 class="bx--toast-notification__title" [innerHTML]="notificationObj.title"></h3>
-			<p class="bx--toast-notification__subtitle" [innerHTML]="notificationObj.subtitle"></p>
-			<p class="bx--toast-notification__caption" [innerHTML]="notificationObj.caption"></p>
+			<h3 *ngIf="!notificationObj.template" ibmToastTitle [innerHTML]="notificationObj.title"></h3>
+			<div *ngIf="!notificationObj.template" ibmToastSubtitle>
+				<span [innerHTML]="notificationObj.subtitle"></span>
+				<ng-container *ngFor="let link of notificationObj.links">
+					<a ibmLink [href]="link.href"> {{link.text}}</a>
+				</ng-container>
+			</div>
+			<p *ngIf="!notificationObj.template" ibmToastCaption [innerHTML]="notificationObj.caption"></p>
+			<ng-container *ngTemplateOutlet="notificationObj.template; context: { $implicit: notificationObj}"></ng-container>
 		</div>
 		<button
-			*ngIf="showClose"
+			*ngIf="!isCloseHidden"
 			class="bx--toast-notification__close-button"
 			type="button"
 			[attr.aria-label]="notificationObj.closeLabel"
 			(click)="onClose()">
-			<ibm-icon-close16 class="bx--toast-notification__close-icon"></ibm-icon-close16>
+			<svg ibmIcon="close" size="16" class="bx--toast-notification__close-icon"></svg>
 		</button>
 	`
 })
 export class Toast extends Notification implements OnInit {
+	private static toastCount = 0;
 	/**
 	 * Can have `type`, `title`, `subtitle`, and `caption` members.
 	 *
@@ -56,7 +75,7 @@ export class Toast extends Notification implements OnInit {
 	 */
 	@Input() notificationObj: ToastContent;
 
-	@HostBinding("attr.id") toastID = "notification";
+	@HostBinding("attr.id") toastID = `toast-${Toast.toastCount++}`;
 	@HostBinding("class.bx--toast-notification") toastClass = true;
 	@HostBinding("attr.role") role = "alert";
 
@@ -65,11 +84,6 @@ export class Toast extends Notification implements OnInit {
 	@HostBinding("class.bx--toast-notification--success") get isSuccess() { return this.notificationObj["type"] === "success"; }
 	@HostBinding("class.bx--toast-notification--warning") get isWarning() { return this.notificationObj["type"] === "warning"; }
 	@HostBinding("class.bx--toast-notification--low-contrast") get isLowContrast() { return this.notificationObj.lowContrast; }
-
-
-	get isExperimental() {
-		return this.experimental.isExperimental;
-	}
 
 	constructor(
 		protected notificationDisplayService: NotificationDisplayService,

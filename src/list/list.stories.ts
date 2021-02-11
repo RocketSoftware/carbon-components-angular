@@ -1,8 +1,9 @@
 import { storiesOf, moduleMetadata } from "@storybook/angular";
 
-import { ListModule, DocumentationModule } from "../";
+import { ListModule } from "../";
+import { DocumentationModule } from "../documentation-component/documentation.module";
 
-storiesOf("List", module).addDecorator(
+storiesOf("Components|List", module).addDecorator(
 	moduleMetadata({
 		imports: [ListModule, DocumentationModule]
 	}))
@@ -54,6 +55,6 @@ storiesOf("List", module).addDecorator(
 	}))
 	.add("Documentation", () => ({
 		template: `
-			<ibm-documentation src="documentation/directives/List.html"></ibm-documentation>
+			<ibm-documentation src="documentation/classes/src_list.list.html"></ibm-documentation>
 		`
 	}));

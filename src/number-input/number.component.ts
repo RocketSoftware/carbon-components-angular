@@ -4,9 +4,13 @@ import {
 	HostBinding,
 	EventEmitter,
 	Output,
-	TemplateRef
+	TemplateRef,
+	HostListener
 } from "@angular/core";
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
+
+import { I18n, Overridable } from "@rocketsoftware/carbon-components-angular/i18n";
+import { Observable } from "rxjs";
 
 /**
  * Used to emit changes performed on number input components.
@@ -35,10 +39,6 @@ export class NumberChange {
 			<ng-container *ngIf="!isTemplate(label)">{{label}}</ng-container>
 			<ng-template *ngIf="isTemplate(label)" [ngTemplateOutlet]="label"></ng-template>
 		</label>
-		<div *ngIf="helperText" class="bx--form__helper-text">
-			<ng-container *ngIf="!isTemplate(helperText)">{{helperText}}</ng-container>
-			<ng-template *ngIf="isTemplate(helperText)" [ngTemplateOutlet]="helperText"></ng-template>
-		</div>
 		<div
 			data-numberinput
 			[attr.data-invalid]="(invalid ? true : null)"
@@ -47,7 +47,9 @@ export class NumberChange {
 				'bx--number--light': theme === 'light',
 				'bx--number--nolabel': !label,
 				'bx--number--helpertext': helperText,
-				'bx--skeleton' : skeleton
+				'bx--skeleton' : skeleton,
+				'bx--number--sm': size === 'sm',
+				'bx--number--xl': size === 'xl'
 			}">
 			<div class="bx--number__input-wrapper">
 				<input
@@ -56,32 +58,40 @@ export class NumberChange {
 					[value]="value"
 					[attr.min]="min"
 					[attr.max]="max"
+					[attr.step]="step"
 					[disabled]="disabled"
 					[required]="required"
 					(input)="onNumberInputChange($event)"/>
-				<ibm-icon-warning-filled16
+				<svg
 					*ngIf="!skeleton && invalid"
-					class="bx--number__invalid"
-					style="display: inherit;">
-				</ibm-icon-warning-filled16>
+					ibmIcon="warning--filled"
+					size="16"
+					class="bx--number__invalid">
+				</svg>
 				<div *ngIf="!skeleton" class="bx--number__controls">
 					<button
 						class="bx--number__control-btn up-icon"
 						type="button"
 						aria-live="polite"
 						aria-atomic="true"
+						[attr.aria-label]="getIncrementLabel() | async"
 						(click)="onIncrement()">
-						<ibm-icon-caret-up16></ibm-icon-caret-up16>
+						<svg ibmIcon="caret--up" size="16"></svg>
 					</button>
 					<button
 						class="bx--number__control-btn down-icon"
 						type="button"
 						aria-live="polite"
 						aria-atomic="true"
+						[attr.aria-label]="getDecrementLabel() | async"
 						(click)="onDecrement()">
-						<ibm-icon-caret-down16></ibm-icon-caret-down16>
+						<svg ibmIcon="caret--down" size="16"></svg>
 					</button>
 				</div>
+			</div>
+			<div *ngIf="helperText && !invalid" class="bx--form__helper-text">
+				<ng-container *ngIf="!isTemplate(helperText)">{{helperText}}</ng-container>
+				<ng-template *ngIf="isTemplate(helperText)" [ngTemplateOutlet]="helperText"></ng-template>
 			</div>
 			<div *ngIf="invalid" class="bx--form-requirement">
 				<ng-container *ngIf="!isTemplate(invalidText)">{{invalidText}}</ng-container>
@@ -126,13 +136,21 @@ export class NumberComponent implements ControlValueAccessor {
 	 */
 	@Input() id = `number-${NumberComponent.numberCount}`;
 	/**
+	 * Number input field render size
+	 */
+	@Input() size: "sm" | "md" | "xl" = "md";
+	/**
 	 * Reflects the required attribute of the `input` element.
 	 */
 	@Input() required: boolean;
 	/**
 	 * Sets the value attribute on the `input` element.
 	 */
-	@Input() set value(v) {
+	@Input() set value(v: any) {
+		if (v === "" || v === null) {
+			this._value = null;
+			return;
+		}
 		this._value = Number(v);
 	}
 
@@ -160,16 +178,45 @@ export class NumberComponent implements ControlValueAccessor {
 	 */
 	@Input() invalidText: string | TemplateRef<any>;
 	/**
+	 * Sets the amount the number controls increment and decrement by.
+	 */
+	@Input() step = 1;
+	/**
+	 * If `step` is a decimal, we may want precision to be set to go around floating point precision.
+	 */
+	@Input() precision: number;
+	/**
 	 * Emits event notifying other classes when a change in state occurs in the input.
 	 */
 	@Output() change = new EventEmitter<NumberChange>();
 
+	@Input()
+	set decrementLabel(value: string | Observable<string>) {
+		this._decrementLabel.override(value);
+	}
+
+	get decrementLabel() {
+		return this._decrementLabel.value;
+	}
+
+	@Input()
+	set incrementLabel(value: string | Observable<string>) {
+		this._incrementLabel.override(value);
+	}
+
+	get incrementLabel() {
+		return this._incrementLabel.value;
+	}
+
 	protected _value = 0;
+
+	protected _decrementLabel: Overridable = this.i18n.getOverridable("NUMBER.DECREMENT");
+	protected _incrementLabel: Overridable = this.i18n.getOverridable("NUMBER.INCREMENT");
 
 	/**
 	 * Creates an instance of `Number`.
 	 */
-	constructor() {
+	constructor(protected i18n: I18n) {
 		NumberComponent.numberCount++;
 	}
 
@@ -196,6 +243,11 @@ export class NumberComponent implements ControlValueAccessor {
 		this.onTouched = fn;
 	}
 
+	@HostListener("focusout")
+	focusOut() {
+		this.onTouched();
+	}
+
 	/**
 	 * Sets the disabled state through the model
 	 */
@@ -214,23 +266,33 @@ export class NumberComponent implements ControlValueAccessor {
 	propagateChange = (_: any) => { };
 
 	/**
-	 * Adds 1 to the current `value`.
+	 * Adds `step` to the current `value`.
 	 */
 	onIncrement(): void {
-		if (this.max === null || this.value < this.max) {
-			this.value++;
+		if (this.max === null || this.value + this.step <= this.max) {
+			this.value += this.step;
+			this.value = parseFloat(this.value.toPrecision(this.precision));
 			this.emitChangeEvent();
 		}
 	}
 
 	/**
-	 * Subtracts 1 to the current `value`.
+	 * Subtracts `step` to the current `value`.
 	 */
 	onDecrement(): void {
-		if (this.min === null || this.value > this.min) {
-			this.value--;
+		if (this.min === null || this.value - this.step >= this.min) {
+			this.value -= this.step;
+			this.value = parseFloat(this.value.toPrecision(this.precision));
 			this.emitChangeEvent();
 		}
+	}
+
+	getDecrementLabel(): Observable<string> {
+		return this._decrementLabel.subject;
+	}
+
+	getIncrementLabel(): Observable<string> {
+		return this._incrementLabel.subject;
 	}
 
 	/**

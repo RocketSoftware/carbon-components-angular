@@ -5,8 +5,9 @@ import {
 	Output
 } from "@angular/core";
 import { TableModel } from "../table-model.class";
-import { I18n, Overridable } from "./../../i18n/i18n.module";
+import { I18n, Overridable } from "@rocketsoftware/carbon-components-angular/i18n";
 import { Observable } from "rxjs";
+import { TableRowSize } from "../table.types";
 
 @Component({
 	// tslint:disable-next-line: component-selector
@@ -30,6 +31,7 @@ import { Observable } from "rxjs";
 					(selectRow)="onRowCheckboxChange(i)"
 					(deselectRow)="onRowCheckboxChange(i)"
 					(expandRow)="model.expandRow(i, !model.isRowExpanded(i))"
+					(rowClick)="onRowClick(i)"
 					*ngIf="!model.isRowFiltered(i)"
 					[class]="(model.rowsClass[i] ? model.rowsClass[i] : null)"
 					[ngClass]="{
@@ -86,7 +88,7 @@ export class TableBody {
 	/**
 	 * Size of the table rows.
 	 */
-	@Input() size: "sm" | "sh" | "md" | "lg" = "md";
+	@Input() size: TableRowSize = "md";
 
 	/**
 	 * Used to populate the row selection checkbox label with a useful value if set.
@@ -116,6 +118,11 @@ export class TableBody {
 	 */
 	@Output() deselectRow = new EventEmitter<Object>();
 
+	/**
+	 * Emits if a row item excluding expandButtons, checkboxes, or radios is clicked.
+	 */
+	@Output() rowClick = new EventEmitter<number>();
+
 	protected _checkboxRowLabel = this.i18n.getOverridable("TABLE.CHECKBOX_ROW");
 	protected _expandButtonAriaLabel = this.i18n.getOverridable("TABLE.EXPAND_BUTTON");
 
@@ -132,6 +139,10 @@ export class TableBody {
 		} else {
 			this.selectRow.emit({ model: this.model, selectedRowIndex: index });
 		}
+	}
+
+	onRowClick(index: number) {
+		this.rowClick.emit(index);
 	}
 
 	getCheckboxRowLabel(): Observable<string> {

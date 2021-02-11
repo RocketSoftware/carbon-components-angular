@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { TimePickerSelect } from "./timepicker-select.component";
-import { SelectModule } from "../select/select.module";
-import { ChevronDown16Module } from "@rocketsoftware/icons-angular/lib/chevron--down/16";
+import { SelectModule } from "@rocketsoftware/carbon-components-angular/select";
+import { IconModule } from "@rocketsoftware/carbon-components-angular/icon";
 
 @NgModule({
 	declarations: [
@@ -14,7 +14,7 @@ import { ChevronDown16Module } from "@rocketsoftware/icons-angular/lib/chevron--
 	imports: [
 		SelectModule,
 		CommonModule,
-		ChevronDown16Module
+		IconModule
 	]
 })
 export class TimePickerSelectModule { }

@@ -8,9 +8,10 @@ import {
 	number
 } from "@storybook/addon-knobs/angular";
 
-import { InputModule, DocumentationModule } from "../";
+import { InputModule } from "../";
+import { DocumentationModule } from "../documentation-component/documentation.module";
 
-storiesOf("Input", module).addDecorator(
+storiesOf("Components|Input", module).addDecorator(
 	moduleMetadata({
 		imports: [InputModule, DocumentationModule]
 	})
@@ -25,6 +26,7 @@ storiesOf("Input", module).addDecorator(
 			{{label}}
 			<input
 				ibmText
+				[size]="size"
 				[invalid]="invalid"
 				[disabled]="disabled"
 				[theme]="theme"
@@ -34,6 +36,7 @@ storiesOf("Input", module).addDecorator(
 	`,
 		props: {
 			theme: select("Theme", ["dark", "light"], "dark"),
+			size: select("Size", ["sm", "md", "xl"], "md"),
 			disabled: boolean("Disabled", false),
 			invalid: boolean("Show form validation", false),
 			invalidText: text("Form validation content", "Validation message here"),
@@ -88,6 +91,6 @@ storiesOf("Input", module).addDecorator(
 	}))
 	.add("Documentation", () => ({
 		template: `
-			<ibm-documentation src="documentation/components/Label.html"></ibm-documentation>
+			<ibm-documentation src="documentation/classes/src_input.label.html"></ibm-documentation>
 		`
 	}));

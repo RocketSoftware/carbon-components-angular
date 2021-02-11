@@ -7,7 +7,10 @@ import {
 	ContentChildren,
 	AfterContentInit,
 	ViewChildren,
-	ElementRef
+	ElementRef,
+	TemplateRef,
+	OnChanges,
+	SimpleChanges
 } from "@angular/core";
 
 import { Tab } from "./tab.component";
@@ -23,7 +26,8 @@ import { Tab } from "./tab.component";
 		<nav
 			class="bx--tabs"
 			[ngClass]="{
-				'bx--skeleton': skeleton
+				'bx--skeleton': skeleton,
+				'bx--tabs--container': type === 'container'
 			}"
 			role="navigation"
 			[attr.aria-label]="ariaLabel"
@@ -34,7 +38,8 @@ import { Tab } from "./tab.component";
 				(click)="showTabList()"
 				(keydown)="onDropdownKeydown($event)">
 				<a
-					href="javascript:void(0)"
+					href="#"
+					(click)="$event.preventDefault()"
 					class="bx--tabs-trigger-text"
 					tabindex="-1">
 					<ng-container *ngIf="!getSelectedTab().headingIsTemplate">
@@ -75,11 +80,14 @@ import { Tab } from "./tab.component";
 						[attr.aria-selected]="tab.active"
 						[attr.tabindex]="(tab.active?0:-1)"
 						[attr.aria-controls]="tab.id"
+						[attr.aria-disabled]="tab.disabled"
 						(focus)="onTabFocus(tabItem, i)"
+						(click)="$event.preventDefault()"
 						draggable="false"
 						id="{{tab.id}}-header"
 						class="bx--tabs__nav-link"
-						href="javascript:void(0)"
+						[title]="tab.title ? tab.title : tab.heading"
+						href="#"
 						role="tab">
 						<ng-container *ngIf="!tab.headingIsTemplate">
 							{{ tab.heading }}
@@ -96,10 +104,10 @@ import { Tab } from "./tab.component";
 				</li>
 			</ul>
 		</nav>
-	 `
+	`
 })
 
-export class TabHeaders implements AfterContentInit {
+export class TabHeaders implements AfterContentInit, OnChanges {
 	/**
 	 * List of `Tab` components.
 	 */
@@ -128,13 +136,16 @@ export class TabHeaders implements AfterContentInit {
 	 */
 	@Input() ariaLabelledby: string;
 
-	@Input() contentBefore;
-	@Input() contentAfter;
+	@Input() contentBefore: TemplateRef<any>;
+	@Input() contentAfter: TemplateRef<any>;
+
+	@Input() type: "default" | "container" = "default";
 
 	/**
 	 * Gets the Unordered List element that holds the `Tab` headings from the view DOM.
 	 */
-	@ViewChild("tabList") headerContainer;
+	// @ts-ignore
+	@ViewChild("tabList", { static: true }) headerContainer;
 	/**
 	 * ContentChild of all the n-tabs
 	 */
@@ -247,6 +258,12 @@ export class TabHeaders implements AfterContentInit {
 			this.setFirstTab();
 		});
 		this.setFirstTab();
+	}
+
+	ngOnChanges(changes: SimpleChanges) {
+		if (this.tabs && changes.cacheActive) {
+			this.tabs.forEach(tab => tab.cacheActive = this.cacheActive);
+		}
 	}
 
 	/**

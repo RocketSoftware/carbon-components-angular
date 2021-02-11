@@ -8,7 +8,7 @@ import {
 import { TableModel } from "../table-model.class";
 import { TableItem } from "../table-item.class";
 import { TableHeaderItem } from "../table-header-item.class";
-import { clone } from "./../../utils/utils";
+import { clone } from "../../utils/index";
 
 export class CustomHeaderItem extends TableHeaderItem {
 	// used for custom sorting
@@ -38,16 +38,19 @@ export class CustomHeaderItem extends TableHeaderItem {
 			<a [attr.href]="data.link">{{data.name}} {{data.surname}}</a>
 		</ng-template>
 		<ng-template #customHeaderTemplate let-data="data">
-			<i><a [attr.href]="data.link">{{data.name}}</a></i>
+			<i ibmTableHeadCellLabel><a [attr.href]="data.link">{{data.name}}</a></i>
 		</ng-template>
 
 		<ibm-table
-			style="display: block; width: 650px;"
 			[model]="model"
 			[size]="size"
+			[sortable]="sortable"
+			[skeleton]="skeleton"
 			[showSelectionColumn]="showSelectionColumn"
+			[stickyHeader]="stickyHeader"
 			[striped]="striped"
 			[isDataGrid]="isDataGrid"
+			(rowClick)="onRowClick($event)"
 			(sort)="customSort($event)">
 		</ibm-table>
 	`
@@ -58,10 +61,15 @@ export class DynamicTableStory implements OnInit {
 	@Input() showSelectionColumn = true;
 	@Input() striped = true;
 	@Input() isDataGrid = false;
+	@Input() sortable = true;
+	@Input() stickyHeader = false;
+	@Input() skeleton = false;
 
-	@ViewChild("customHeaderTemplate")
+	// @ts-ignore
+	@ViewChild("customHeaderTemplate", { static: false })
 	protected customHeaderTemplate: TemplateRef<any>;
-	@ViewChild("customTableItemTemplate")
+	// @ts-ignore
+	@ViewChild("customTableItemTemplate", { static: false })
 	protected customTableItemTemplate: TemplateRef<any>;
 
 	ngOnInit() {
@@ -69,14 +77,17 @@ export class DynamicTableStory implements OnInit {
 			[new TableItem({ data: "Name 1" }), new TableItem({ data: { name: "Lessy", link: "#" }, template: this.customTableItemTemplate })],
 			[new TableItem({ data: "Name 3" }), new TableItem({ data: "swer" })],
 			[new TableItem({ data: "Name 2" }), new TableItem({ data: { name: "Alice", surname: "Bob" }, template: this.customTableItemTemplate })],
-			[new TableItem({ data: "Name 4" }), new TableItem({ data: "twer" })]
+			[new TableItem({ data: "Name 4" }), new TableItem({ data: "twer" })],
+			[new TableItem({ data: "Name 5" }), new TableItem({ data: "twer" })],
+			[new TableItem({ data: "Name 6" }), new TableItem({ data: "twer" })],
+			[new TableItem({ data: "Name 7" }), new TableItem({ data: "twer" })],
+			[new TableItem({ data: "Name 8" }), new TableItem({ data: "twer" })]
 		];
 		this.model.header = [
 			new TableHeaderItem({ data: "Very long title indeed" }),
 			new CustomHeaderItem({
 				data: { name: "Custom header", link: "#" },
-				template: this.customHeaderTemplate,
-				style: { "width": "auto" }
+				template: this.customHeaderTemplate
 			})
 		];
 	}
@@ -101,5 +112,9 @@ export class DynamicTableStory implements OnInit {
 	addColumn() {
 		let column = Array(this.model.data.length).fill(null).map(() => new TableItem({ data: `Column ${this.model.row(0).length}` }));
 		this.model.addColumn(column);
+	}
+
+	onRowClick(index: number) {
+		console.log("Row item selected:", index);
 	}
 }
