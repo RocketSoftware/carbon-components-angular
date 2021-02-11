@@ -7,8 +7,8 @@
 	"whitelistedNonPeerDependencies": [
 		"@carbon/utils-position",
 		"flatpickr",
-		"@carbon/icon-helpers",
-		"@carbon/icons",
+		"@rocketsoftware/icon-helpers",
+		"@rocketsoftware/icons",
 		"@carbon/telemetry"
 	]
 }

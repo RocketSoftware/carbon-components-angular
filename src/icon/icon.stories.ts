@@ -12,9 +12,9 @@ import { IconModule } from "./icon.module";
 import { IconService } from "./icon.service";
 import { Component, OnInit } from "@angular/core";
 
-import { Accessibility16 } from "@carbon/icons";
+import { Accessibility16 } from "@rocketsoftware/icons";
 
-import * as Icons from "@carbon/icons";
+import * as Icons from "@rocketsoftware/icons";
 
 @Component({
 	selector: "app-demo-icon",

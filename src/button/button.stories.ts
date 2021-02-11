@@ -4,7 +4,7 @@ import { withKnobs, select } from "@storybook/addon-knobs/angular";
 import { ButtonModule } from "../";
 import { DocumentationModule } from "../documentation-component/documentation.module";
 
-import { AddModule, CopyModule } from "@carbon/icons-angular";
+import { AddModule, CopyModule } from "@rocketsoftware/icons-angular";
 
 
 storiesOf("Components|Button", module)

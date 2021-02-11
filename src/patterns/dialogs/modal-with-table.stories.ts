@@ -12,7 +12,7 @@ import {
 	TableModel,
 	TableModule
 } from "../../table/index";
-import { Data_2Module } from "@carbon/icons-angular";
+import { Data_2Module } from "@rocketsoftware/icons-angular";
 import { ButtonModule } from "../../button/index";
 import { ProgressIndicatorModule } from "../../progress-indicator";
 import { LinkModule } from "../../link/index";

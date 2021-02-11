@@ -28,7 +28,7 @@ import {
 	SaveModule,
 	DownloadModule,
 	AddModule
-} from "@carbon/icons-angular";
+} from "@rocketsoftware/icons-angular";
 
 import {
 	TableStory,

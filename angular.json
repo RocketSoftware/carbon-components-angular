@@ -69,7 +69,7 @@
       }
     }
   },
-  "defaultProject": "carbon-components-angular",
+  "defaultProject": "@rocketsoftware/carbon-components-angular",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "ibm",

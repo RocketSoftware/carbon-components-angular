@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { toString } from "@carbon/icon-helpers";
+import { toString } from "@rocketsoftware/icon-helpers";
 
 // icon imports
 import {
@@ -26,7 +26,7 @@ import {
 	Settings16,
 	Warning16,
 	WarningFilled16
-} from "@carbon/icons";
+} from "@rocketsoftware/icons";
 
 /**
  * An object that represents a parsed icon

@@ -1,6 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, HostBinding, Input } from "@angular/core";
 import { IconService } from "./icon.service";
-import { getAttributes } from "@carbon/icon-helpers";
+import { getAttributes } from "@rocketsoftware/icon-helpers";
 
 /**
  * A directive for applying styling to an input element.

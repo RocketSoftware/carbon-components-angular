@@ -1,6 +1,6 @@
 {
   "name": "@rocketsoftware/carbon-components-angular",
-  "version": "0.2.8",
+  "version": "0.0.0",
   "description": "Next generation components",
   "main": "index.js",
   "scripts": {
@@ -64,8 +64,8 @@
     "@angular/forms": "^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26 || ^0.9.0 || ^0.10.0",
-    "@rocketsoftware/carbon-components": "0.2.8",
-    "@rocketsoftware/icons-angular": "0.0.3"
+    "@rocketsoftware/carbon-components": "0.7.0",
+    "@rocketsoftware/icons-angular": "1.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.13.9",
@@ -81,8 +81,8 @@
     "@angular/platform-browser-dynamic": "7.2.16",
     "@angular/router": "7.2.16",
     "@babel/core": "7.4.3",
-    "@rocketsoftware/icons-angular": "0.0.3",
-    "@rocketsoftware/themes": "0.6.0",
+    "@rocketsoftware/icons-angular": "1.0.0",
+    "@rocketsoftware/themes": "0.7.0",
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
     "@storybook/addon-actions": "5.3.19",
@@ -134,8 +134,8 @@
     "zone.js": "0.8.26"
   },
   "dependencies": {
-    "@carbon/icon-helpers": "10.9.0",
-    "@carbon/icons": "10.20.0",
+    "@rocketsoftware/icon-helpers": "0.7.0",
+    "@rocketsoftware/icons": "0.7.0",
     "@carbon/telemetry": "0.0.0-alpha.6",
     "@carbon/utils-position": "1.1.3",
     "flatpickr": "4.6.1"
